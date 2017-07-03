@@ -420,7 +420,8 @@ class User extends CI_Controller {
 
 
         }
-      } // END OF LOOPING GENERASI
+      }
+      // END OF LOOPING GENERASI
 
         // $sum = 0;
         $sumMembershipDegree[0] = array_sum($membershipDegree['umur']['muda']);
