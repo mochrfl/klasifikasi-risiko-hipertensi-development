@@ -425,130 +425,238 @@ class User extends CI_Controller {
 
         // $sum = 0;
         $sumMembershipDegree[0] = array_sum($membershipDegree['umur']['muda']);
+        // echo $sumMembershipDegree[0];
         $sumMembershipDegree[1] = array_sum($membershipDegree['umur']['tua']);
-        $sumMembershipDegree[3] = array_sum($membershipDegree['sex']['lk']);
-        $sumMembershipDegree[4] = array_sum($membershipDegree['sex']['pr']);
-        $sumMembershipDegree[5] = array_sum($membershipDegree['td_sistol']['normal']);
-        $sumMembershipDegree[6] = array_sum($membershipDegree['td_sistol']['prahipertensi']);
-        $sumMembershipDegree[7] = array_sum($membershipDegree['td_sistol']['hipertensi']);
-        $sumMembershipDegree[8] = array_sum($membershipDegree['td_diastol']['normal']);
-        $sumMembershipDegree[9] = array_sum($membershipDegree['td_diastol']['prahipertensi']);
-        $sumMembershipDegree[10] = array_sum($membershipDegree['td_diastol']['hipertensi']);
-        $sumMembershipDegree[11] = array_sum($membershipDegree['lingkar_perut']['kecil']);
-        $sumMembershipDegree[12] = array_sum($membershipDegree['lingkar_perut']['besar']);
-        $sumMembershipDegree[13] = array_sum($membershipDegree['bmi']['normal']);
-        $sumMembershipDegree[14] = array_sum($membershipDegree['bmi']['ow']);
-        $sumMembershipDegree[15] = array_sum($membershipDegree['merokok']['ya']);
-        $sumMembershipDegree[16] = array_sum($membershipDegree['merokok']['tdk']);
-        $sumMembershipDegree[17] = array_sum($membershipDegree['makanan_berlemak']['sering']);
-        $sumMembershipDegree[18] = array_sum($membershipDegree['makanan_berlemak']['jarang']);
-        $sumMembershipDegree[19] = array_sum($membershipDegree['k_gula']['>4sdm']);
-        $sumMembershipDegree[20] = array_sum($membershipDegree['k_gula']['<=4sdm']);
-        $sumMembershipDegree[21] = array_sum($membershipDegree['k_garam']['>1sdt']);
-        $sumMembershipDegree[22] = array_sum($membershipDegree['k_garam']['<=1sdt']);
-        $sumMembershipDegree[23] = array_sum($membershipDegree['olahraga']['ya']);
-        $sumMembershipDegree[24] = array_sum($membershipDegree['olahraga']['tdk']);
-        $sumMembershipDegree[25] = array_sum($membershipDegree['k_kafein']['tdk']);
-        $sumMembershipDegree[26] = array_sum($membershipDegree['k_kafein']['<=3sdt']);
-        $sumMembershipDegree[27] = array_sum($membershipDegree['k_kafein']['>3sdt']);
+        $sumMembershipDegree[2] = array_sum($membershipDegree['sex']['lk']);
+        $sumMembershipDegree[3] = array_sum($membershipDegree['sex']['pr']);
+        $sumMembershipDegree[4] = array_sum($membershipDegree['td_sistol']['normal']);
+        $sumMembershipDegree[5] = array_sum($membershipDegree['td_sistol']['prahipertensi']);
+        $sumMembershipDegree[6] = array_sum($membershipDegree['td_sistol']['hipertensi']);
+        $sumMembershipDegree[7] = array_sum($membershipDegree['td_diastol']['normal']);
+        $sumMembershipDegree[8] = array_sum($membershipDegree['td_diastol']['prahipertensi']);
+        $sumMembershipDegree[9] = array_sum($membershipDegree['td_diastol']['hipertensi']);
+        $sumMembershipDegree[10] = array_sum($membershipDegree['lingkar_perut']['kecil']);
+        $sumMembershipDegree[11] = array_sum($membershipDegree['lingkar_perut']['besar']);
+        $sumMembershipDegree[12] = array_sum($membershipDegree['bmi']['normal']);
+        $sumMembershipDegree[13] = array_sum($membershipDegree['bmi']['ow']);
+        $sumMembershipDegree[14] = array_sum($membershipDegree['merokok']['ya']);
+        $sumMembershipDegree[15] = array_sum($membershipDegree['merokok']['tdk']);
+        $sumMembershipDegree[16] = array_sum($membershipDegree['makanan_berlemak']['sering']);
+        $sumMembershipDegree[17] = array_sum($membershipDegree['makanan_berlemak']['jarang']);
+        $sumMembershipDegree[18] = array_sum($membershipDegree['k_gula']['>4sdm']);
+        $sumMembershipDegree[19] = array_sum($membershipDegree['k_gula']['<=4sdm']);
+        $sumMembershipDegree[20] = array_sum($membershipDegree['k_garam']['>1sdt']);
+        $sumMembershipDegree[21] = array_sum($membershipDegree['k_garam']['<=1sdt']);
+        $sumMembershipDegree[22] = array_sum($membershipDegree['olahraga']['ya']);
+        $sumMembershipDegree[23] = array_sum($membershipDegree['olahraga']['tdk']);
+        $sumMembershipDegree[24] = array_sum($membershipDegree['k_kafein']['tdk']);
+        $sumMembershipDegree[25] = array_sum($membershipDegree['k_kafein']['<=3sdt']);
+        $sumMembershipDegree[26] = array_sum($membershipDegree['k_kafein']['>3sdt']);
+      //
+      // // ini
+      $certainSumMembershipDegree =[[]];
 
-      // ini
-      $certainSumMembershipDegree =[];
+      //rendah
+        $certainSumMembershipDegree[0][0] =0; //umur muda
+        $certainSumMembershipDegree[0][1] =0; // umur tua
+        $certainSumMembershipDegree[0][2] =0; //sex lk
+        $certainSumMembershipDegree[0][3] =0; //sex pr
+        $certainSumMembershipDegree[0][4] =0; //td_sistol normal
+        $certainSumMembershipDegree[0][5] =0; //td_sistol prahipertensi
+        $certainSumMembershipDegree[0][6] =0; //td_sistol hipertensi
+        $certainSumMembershipDegree[0][7] =0; //td_distol normal
+        $certainSumMembershipDegree[0][8] = 0; //td_distol prahipertensi
+        $certainSumMembershipDegree[0][9] =0; //td_distol hipertensi
+        $certainSumMembershipDegree[0][10] =0; //lingkar_perut kecil
+        $certainSumMembershipDegree[0][11] = 0; //lingkar_perut besar
+        $certainSumMembershipDegree[0][12] = 0; //bmi normal
+        $certainSumMembershipDegree[0][13] = 0; //bmi ow
+        $certainSumMembershipDegree[0][14] = 0; //merokok ya
+        $certainSumMembershipDegree[0][15] = 0; //merokok tidak
+        $certainSumMembershipDegree[0][16] = 0; //makanan_berlemak sering
+        $certainSumMembershipDegree[0][17] = 0; //makanan_berlemak jarang
+        $certainSumMembershipDegree[0][18] = 0; //k_gula >4sdm
+        $certainSumMembershipDegree[0][19] = 0; //k_gula <=4sdm
+        $certainSumMembershipDegree[0][20] = 0; //k_garam >1sdt
+        $certainSumMembershipDegree[0][21] = 0; //k_garam <=1sdt
+        $certainSumMembershipDegree[0][22] = 0; //olahraga ya
+        $certainSumMembershipDegree[0][23] = 0; //olahraga tidak
+        $certainSumMembershipDegree[0][24] = 0; //kafein tdk
+        $certainSumMembershipDegree[0][25] = 0; //kafein <=3sdt
+        $certainSumMembershipDegree[0][26] = 0; //kafein >3sdt
+
+//sedang
+        $certainSumMembershipDegree[1][0] =0; //umur muda
+        $certainSumMembershipDegree[1][1] =0; // umur tua
+        $certainSumMembershipDegree[1][2] =0; //sex lk
+        $certainSumMembershipDegree[1][3] =0; //sex pr
+        $certainSumMembershipDegree[1][4] =0; //td_sistol normal
+        $certainSumMembershipDegree[1][5] =0; //td_sistol prahipertensi
+        $certainSumMembershipDegree[1][6] =0; //td_sistol hipertensi
+        $certainSumMembershipDegree[1][7] =0; //td_distol normal
+        $certainSumMembershipDegree[1][8] = 0; //td_distol prahipertensi
+        $certainSumMembershipDegree[1][9] =0; //td_distol hipertensi
+        $certainSumMembershipDegree[1][10] =0; //lingkar_perut kecil
+        $certainSumMembershipDegree[1][11] = 0; //lingkar_perut besar
+        $certainSumMembershipDegree[1][12] = 0; //bmi normal
+        $certainSumMembershipDegree[1][13] = 0; //bmi ow
+        $certainSumMembershipDegree[1][14] = 0; //merokok ya
+        $certainSumMembershipDegree[1][15] = 0; //merokok tidak
+        $certainSumMembershipDegree[1][16] = 0; //makanan_berlemak sering
+        $certainSumMembershipDegree[1][17] = 0; //makanan_berlemak jarang
+        $certainSumMembershipDegree[1][18] = 0; //k_gula >4sdm
+        $certainSumMembershipDegree[1][19] = 0; //k_gula <=4sdm
+        $certainSumMembershipDegree[1][20] = 0; //k_garam >1sdt
+        $certainSumMembershipDegree[1][21] = 0; //k_garam <=1sdt
+        $certainSumMembershipDegree[1][22] = 0; //olahraga ya
+        $certainSumMembershipDegree[1][23] = 0; //olahraga tidak
+        $certainSumMembershipDegree[1][24] = 0; //kafein tdk
+        $certainSumMembershipDegree[1][25] = 0; //kafein <=3sdt
+        $certainSumMembershipDegree[1][26] = 0; //kafein >3sdt
+
+//tinggi
+        $certainSumMembershipDegree[2][0] =0; //umur muda
+        $certainSumMembershipDegree[2][1] =0; // umur tua
+        $certainSumMembershipDegree[2][2] =0; //sex lk
+        $certainSumMembershipDegree[2][3] =0; //sex pr
+        $certainSumMembershipDegree[2][4] =0; //td_sistol normal
+        $certainSumMembershipDegree[2][5] =0; //td_sistol prahipertensi
+        $certainSumMembershipDegree[2][6] =0; //td_sistol hipertensi
+        $certainSumMembershipDegree[2][7] =0; //td_distol normal
+        $certainSumMembershipDegree[2][8] = 0; //td_distol prahipertensi
+        $certainSumMembershipDegree[2][9] =0; //td_distol hipertensi
+        $certainSumMembershipDegree[2][10] =0; //lingkar_perut kecil
+        $certainSumMembershipDegree[2][11] = 0; //lingkar_perut besar
+        $certainSumMembershipDegree[2][12] = 0; //bmi normal
+        $certainSumMembershipDegree[2][13] = 0; //bmi ow
+        $certainSumMembershipDegree[2][14] = 0; //merokok ya
+        $certainSumMembershipDegree[2][15] = 0; //merokok tidak
+        $certainSumMembershipDegree[2][16] = 0; //makanan_berlemak sering
+        $certainSumMembershipDegree[2][17] = 0; //makanan_berlemak jarang
+        $certainSumMembershipDegree[2][18] = 0; //k_gula >4sdm
+        $certainSumMembershipDegree[2][19] = 0; //k_gula <=4sdm
+        $certainSumMembershipDegree[2][20] = 0; //k_garam >1sdt
+        $certainSumMembershipDegree[2][21] = 0; //k_garam <=1sdt
+        $certainSumMembershipDegree[2][22] = 0; //olahraga ya
+        $certainSumMembershipDegree[2][23] = 0; //olahraga tidak
+        $certainSumMembershipDegree[2][24] = 0; //kafein tdk
+        $certainSumMembershipDegree[2][25] = 0; //kafein <=3sdt
+        $certainSumMembershipDegree[2][26] = 0; //kafein >3sdt
 
       for ($k=0; $k < count($data_training); $k++) {
         if ($data_training[$k][12] == 1) {
-          $certainSumMembershipDegree['rendah']['umur']['muda'] = $certainSumMembershipDegree['rendah']['umur']['muda'] + $membershipDegree['umur']['muda'][$k];
-          $certainSumMembershipDegree['rendah']['umur']['tua'] = $certainSumMembershipDegree['rendah']['umur']['tua'] + $membershipDegree['umur']['tua'][$k];
-          $certainSumMembershipDegree['rendah']['sex']['lk'] = $certainSumMembershipDegree['rendah']['sex']['lk'] + $membershipDegree['sex']['lk'][$k];
-          $certainSumMembershipDegree['rendah']['sex']['pr'] = $certainSumMembershipDegree['rendah']['sex']['pr'] + $membershipDegree['sex']['pr'][$k];
-          $certainSumMembershipDegree['rendah']['td_sistol']['normal'] = $certainSumMembershipDegree['rendah']['td_sistol']['normal'] + $membershipDegree['td_sistol']['normal'][$k];
-          $certainSumMembershipDegree['rendah']['td_sistol']['prahipertensi'] = $certainSumMembershipDegree['rendah']['td_sistol']['prahipertensi'] + $membershipDegree['td_sistol']['prahipertensi'][$k];
-          $certainSumMembershipDegree['rendah']['td_sistol']['hipertensi'] = $certainSumMembershipDegree['rendah']['td_sistol']['hipertensi'] + $membershipDegree['td_sistol']['hipertensi'][$k];
-          $certainSumMembershipDegree['rendah']['td_diastol']['normal'] = $certainSumMembershipDegree['rendah']['td_diastol']['normal'] + $membershipDegree['td_diastol']['normal'][$k];
-          $certainSumMembershipDegree['rendah']['td_diastol']['prahipertensi'] = $certainSumMembershipDegree['rendah']['td_diastol']['prahipertensi'] + $membershipDegree['td_diastol']['prahipertensi'][$k];
-          $certainSumMembershipDegree['rendah']['td_diastol']['hipertensi'] = $certainSumMembershipDegree['rendah']['td_diastol']['hipertensi'] + $membershipDegree['td_diastol']['hipertensi'][$k];
-          $certainSumMembershipDegree['rendah']['lingkar_perut']['kecil'] = $certainSumMembershipDegree['rendah']['lingkar_perut']['kecil'] + $membershipDegree['lingkar_perut']['kecil'][$k];
-          $certainSumMembershipDegree['rendah']['lingkar_perut']['besar'] = $certainSumMembershipDegree['rendah']['lingkar_perut']['besar'] + $membershipDegree['lingkar_perut']['besar'][$k];
-          $certainSumMembershipDegree['rendah']['bmi']['normal'] = $certainSumMembershipDegree['rendah']['bmi']['normal'] + $membershipDegree['bmi']['normal'][$k];
-          $certainSumMembershipDegree['rendah']['bmi']['ow'] = $certainSumMembershipDegree['rendah']['bmi']['ow'] + $membershipDegree['bmi']['ow'][$k];
-          $certainSumMembershipDegree['rendah']['merokok']['ya'] = $certainSumMembershipDegree['rendah']['merokok']['ya'] + $membershipDegree['merokok']['ya'][$k];
-          $certainSumMembershipDegree['rendah']['merokok']['tdk'] = $certainSumMembershipDegree['rendah']['merokok']['tdk'] + $membershipDegree['merokok']['tdk'][$k];
-          $certainSumMembershipDegree['rendah']['makanan_berlemak']['sering'] = $certainSumMembershipDegree['rendah']['makanan_berlemak']['sering'] + $membershipDegree['makanan_berlemak']['sering'][$k];
-          $certainSumMembershipDegree['rendah']['makanan_berlemak']['jarang'] = $certainSumMembershipDegree['rendah']['makanan_berlemak']['jarang'] + $membershipDegree['makanan_berlemak']['jarang'][$k];
-          $certainSumMembershipDegree['rendah']['k_gula']['>4sdm'] = $certainSumMembershipDegree['rendah']['k_gula']['>4sdm'] + $membershipDegree['k_gula']['>4sdm'][$k];
-          $certainSumMembershipDegree['rendah']['k_gula']['<=4sdm'] = $certainSumMembershipDegree['rendah']['k_gula']['<=4sdm'] + $membershipDegree['k_gula']['<=4sdm'][$k];
-          $certainSumMembershipDegree['rendah']['k_garam']['>1sdt'] = $certainSumMembershipDegree['rendah']['k_garam']['>1sdt'] + $membershipDegree['k_garam']['>1sdt'][$k];
-          $certainSumMembershipDegree['rendah']['k_garam']['<=1sdt'] = $certainSumMembershipDegree['rendah']['k_garam']['<=1sdt'] + $membershipDegree['k_garam']['<=1sdt'][$k];
-          $certainSumMembershipDegree['rendah']['olahraga']['ya'] = $certainSumMembershipDegree['rendah']['olahraga']['ya'] + $membershipDegree['olahraga']['ya'][$k];
-          $certainSumMembershipDegree['rendah']['olahraga']['tdk'] = $certainSumMembershipDegree['rendah']['olahraga']['tdk'] + $membershipDegree['olahraga']['tdk'][$k];
-          $certainSumMembershipDegree['rendah']['k_kafein']['tdk'] = $certainSumMembershipDegree['rendah']['k_kafein']['tdk'] + $membershipDegree['k_kafein']['tdk'][$k];
-          $certainSumMembershipDegree['rendah']['k_kafein']['<=3sdt'] = $certainSumMembershipDegree['rendah']['k_kafein']['<=3sdt'] + $membershipDegree['k_kafein']['<=3sdt'][$k];
-          $certainSumMembershipDegree['rendah']['k_kafein']['>3sdt'] = $certainSumMembershipDegree['rendah']['k_kafein']['>3sdt'] + $membershipDegree['k_kafein']['>3sdt'][$k];
+          $certainSumMembershipDegree[0][0] += $membershipDegree['umur']['muda'][$k];
+          $certainSumMembershipDegree[0][1] += $membershipDegree['umur']['tua'][$k];
+          $certainSumMembershipDegree[0][2] += $membershipDegree['sex']['lk'][$k];
+          $certainSumMembershipDegree[0][3] += $membershipDegree['sex']['pr'][$k];
+          $certainSumMembershipDegree[0][4] += $membershipDegree['td_sistol']['normal'][$k];
+          $certainSumMembershipDegree[0][5] += $membershipDegree['td_sistol']['prahipertensi'][$k];
+          $certainSumMembershipDegree[0][6] += $membershipDegree['td_sistol']['hipertensi'][$k];
+          $certainSumMembershipDegree[0][7] += $membershipDegree['td_diastol']['normal'][$k];
+          $certainSumMembershipDegree[0][8] += $membershipDegree['td_diastol']['prahipertensi'][$k];
+          $certainSumMembershipDegree[0][9] += $membershipDegree['td_diastol']['hipertensi'][$k];
+          $certainSumMembershipDegree[0][10] += $membershipDegree['lingkar_perut']['kecil'][$k];
+          $certainSumMembershipDegree[0][11] += $membershipDegree['lingkar_perut']['besar'][$k];
+          $certainSumMembershipDegree[0][12] += $membershipDegree['bmi']['normal'][$k];
+          $certainSumMembershipDegree[0][13] += $membershipDegree['bmi']['ow'][$k];
+          $certainSumMembershipDegree[0][14] += $membershipDegree['merokok']['ya'][$k];
+          $certainSumMembershipDegree[0][15] += $membershipDegree['merokok']['tdk'][$k];
+          $certainSumMembershipDegree[0][16] += $membershipDegree['makanan_berlemak']['sering'][$k];
+          $certainSumMembershipDegree[0][17] += $membershipDegree['makanan_berlemak']['jarang'][$k];
+          $certainSumMembershipDegree[0][18] += $membershipDegree['k_gula']['>4sdm'][$k];
+          $certainSumMembershipDegree[0][19] += $membershipDegree['k_gula']['<=4sdm'][$k];
+          $certainSumMembershipDegree[0][20] += $membershipDegree['k_garam']['>1sdt'][$k];
+          $certainSumMembershipDegree[0][21] += $membershipDegree['k_garam']['<=1sdt'][$k];
+          $certainSumMembershipDegree[0][22] += $membershipDegree['olahraga']['ya'][$k];
+          $certainSumMembershipDegree[0][23] += $membershipDegree['olahraga']['tdk'][$k];
+          $certainSumMembershipDegree[0][24] += $membershipDegree['k_kafein']['tdk'][$k];
+          $certainSumMembershipDegree[0][25] += $membershipDegree['k_kafein']['<=3sdt'][$k];
+          $certainSumMembershipDegree[0][26] + $membershipDegree['k_kafein']['>3sdt'][$k];
 
         } elseif ($data_training[$k][12] == 2) {
-          $certainSumMembershipDegree['sedang']['umur']['muda'] = $certainSumMembershipDegree['sedang']['umur']['muda'] + $membershipDegree['umur']['muda'][$k];
-          $certainSumMembershipDegree['sedang']['umur']['tua'] = $certainSumMembershipDegree['sedang']['umur']['tua'] + $membershipDegree['umur']['tua'][$k];
-          $certainSumMembershipDegree['sedang']['sex']['lk'] = $certainSumMembershipDegree['sedang']['sex']['lk'] + $membershipDegree['sex']['lk'][$k];
-          $certainSumMembershipDegree['sedang']['sex']['pr'] = $certainSumMembershipDegree['sedang']['sex']['pr'] + $membershipDegree['sex']['pr'][$k];
-          $certainSumMembershipDegree['sedang']['td_sistol']['normal'] = $certainSumMembershipDegree['sedang']['td_sistol']['normal'] + $membershipDegree['td_sistol']['normal'][$k];
-          $certainSumMembershipDegree['sedang']['td_sistol']['prahipertensi'] = $certainSumMembershipDegree['sedang']['td_sistol']['prahipertensi'] + $membershipDegree['td_sistol']['prahipertensi'][$k];
-          $certainSumMembershipDegree['sedang']['td_sistol']['hipertensi'] = $certainSumMembershipDegree['rendah']['td_sistol']['hipertensi'] + $membershipDegree['td_sistol']['hipertensi'][$k];
-          $certainSumMembershipDegree['sedang']['td_diastol']['normal'] = $certainSumMembershipDegree['sedang']['td_diastol']['normal'] + $membershipDegree['td_diastol']['normal'][$k];
-          $certainSumMembershipDegree['sedang']['td_diastol']['prahipertensi'] = $certainSumMembershipDegree['sedang']['td_diastol']['prahipertensi'] + $membershipDegree['td_diastol']['prahipertensi'][$k];
-          $certainSumMembershipDegree['sedang']['td_diastol']['hipertensi'] = $certainSumMembershipDegree['sedang']['td_diastol']['hipertensi'] + $membershipDegree['td_diastol']['hipertensi'][$k];
-          $certainSumMembershipDegree['sedang']['lingkar_perut']['kecil'] = $certainSumMembershipDegree['sedang']['lingkar_perut']['kecil'] + $membershipDegree['lingkar_perut']['kecil'][$k];
-          $certainSumMembershipDegree['sedang']['lingkar_perut']['besar'] = $certainSumMembershipDegree['sedang']['lingkar_perut']['besar'] + $membershipDegree['lingkar_perut']['besar'][$k];
-          $certainSumMembershipDegree['sedang']['bmi']['normal'] = $certainSumMembershipDegree['sedang']['bmi']['normal'] + $membershipDegree['bmi']['normal'][$k];
-          $certainSumMembershipDegree['sedang']['bmi']['ow'] = $certainSumMembershipDegree['sedang']['bmi']['ow'] + $membershipDegree['bmi']['ow'][$k];
-          $certainSumMembershipDegree['sedang']['merokok']['ya'] = $certainSumMembershipDegree['sedang']['merokok']['ya'] + $membershipDegree['merokok']['ya'][$k];
-          $certainSumMembershipDegree['sedang']['merokok']['tdk'] = $certainSumMembershipDegree['sedang']['merokok']['tdk'] + $membershipDegree['merokok']['tdk'][$k];
-          $certainSumMembershipDegree['sedang']['makanan_berlemak']['sering'] = $certainSumMembershipDegree['sedang']['makanan_berlemak']['sering'] + $membershipDegree['makanan_berlemak']['sering'][$k];
-          $certainSumMembershipDegree['sedang']['makanan_berlemak']['jarang'] = $certainSumMembershipDegree['sedang']['makanan_berlemak']['jarang'] + $membershipDegree['makanan_berlemak']['jarang'][$k];
-          $certainSumMembershipDegree['sedang']['k_gula']['>4sdm'] = $certainSumMembershipDegree['sedang']['k_gula']['>4sdm'] + $membershipDegree['k_gula']['>4sdm'][$k];
-          $certainSumMembershipDegree['sedang']['k_gula']['<=4sdm'] = $certainSumMembershipDegree['sedang']['k_gula']['<=4sdm'] + $membershipDegree['k_gula']['<=4sdm'][$k];
-          $certainSumMembershipDegree['sedang']['k_garam']['>1sdt'] = $certainSumMembershipDegree['sedang']['k_garam']['>1sdt'] + $membershipDegree['k_garam']['>1sdt'][$k];
-          $certainSumMembershipDegree['sedang']['k_garam']['<=1sdt'] = $certainSumMembershipDegree['sedang']['k_garam']['<=1sdt'] + $membershipDegree['k_garam']['<=1sdt'][$k];
-          $certainSumMembershipDegree['sedang']['olahraga']['ya'] = $certainSumMembershipDegree['sedang']['olahraga']['ya'] + $membershipDegree['olahraga']['ya'][$k];
-          $certainSumMembershipDegree['sedang']['olahraga']['tdk'] = $certainSumMembershipDegree['sedang']['olahraga']['tdk'] + $membershipDegree['olahraga']['tdk'][$k];
-          $certainSumMembershipDegree['sedang']['k_kafein']['tdk'] = $certainSumMembershipDegree['sedang']['k_kafein']['tdk'] + $membershipDegree['k_kafein']['tdk'][$k];
-          $certainSumMembershipDegree['sedang']['k_kafein']['<=3sdt'] = $certainSumMembershipDegree['sedang']['k_kafein']['<=3sdt'] + $membershipDegree['k_kafein']['<=3sdt'][$k];
-          $certainSumMembershipDegree['sedang']['k_kafein']['>3sdt'] = $certainSumMembershipDegree['sedang']['k_kafein']['>3sdt'] + $membershipDegree['k_kafein']['>3sdt'][$k];
+          $certainSumMembershipDegree[1][0] += $membershipDegree['umur']['muda'][$k];
+          $certainSumMembershipDegree[1][1] += $membershipDegree['umur']['tua'][$k];
+          $certainSumMembershipDegree[1][2] += $membershipDegree['sex']['lk'][$k];
+          $certainSumMembershipDegree[1][3] += $membershipDegree['sex']['pr'][$k];
+          $certainSumMembershipDegree[1][4] += $membershipDegree['td_sistol']['normal'][$k];
+          $certainSumMembershipDegree[1][5] += $membershipDegree['td_sistol']['prahipertensi'][$k];
+          $certainSumMembershipDegree[1][6] += $membershipDegree['td_sistol']['hipertensi'][$k];
+          $certainSumMembershipDegree[1][7] += $membershipDegree['td_diastol']['normal'][$k];
+          $certainSumMembershipDegree[1][8] += $membershipDegree['td_diastol']['prahipertensi'][$k];
+          $certainSumMembershipDegree[1][9] += $membershipDegree['td_diastol']['hipertensi'][$k];
+          $certainSumMembershipDegree[1][10] += $membershipDegree['lingkar_perut']['kecil'][$k];
+          $certainSumMembershipDegree[1][11] += $membershipDegree['lingkar_perut']['besar'][$k];
+          $certainSumMembershipDegree[1][12] += $membershipDegree['bmi']['normal'][$k];
+          $certainSumMembershipDegree[1][13] += $membershipDegree['bmi']['ow'][$k];
+          $certainSumMembershipDegree[1][14] += $membershipDegree['merokok']['ya'][$k];
+          $certainSumMembershipDegree[1][15] += $membershipDegree['merokok']['tdk'][$k];
+          $certainSumMembershipDegree[1][16] += $membershipDegree['makanan_berlemak']['sering'][$k];
+          $certainSumMembershipDegree[1][17] += $membershipDegree['makanan_berlemak']['jarang'][$k];
+          $certainSumMembershipDegree[1][18] += $membershipDegree['k_gula']['>4sdm'][$k];
+          $certainSumMembershipDegree[1][19] += $membershipDegree['k_gula']['<=4sdm'][$k];
+          $certainSumMembershipDegree[1][20] += $membershipDegree['k_garam']['>1sdt'][$k];
+          $certainSumMembershipDegree[1][21] += $membershipDegree['k_garam']['<=1sdt'][$k];
+          $certainSumMembershipDegree[1][22] += $membershipDegree['olahraga']['ya'][$k];
+          $certainSumMembershipDegree[1][23] += $membershipDegree['olahraga']['tdk'][$k];
+          $certainSumMembershipDegree[1][24] += $membershipDegree['k_kafein']['tdk'][$k];
+          $certainSumMembershipDegree[1][25] += $membershipDegree['k_kafein']['<=3sdt'][$k];
+          $certainSumMembershipDegree[1][26] += $membershipDegree['k_kafein']['>3sdt'][$k];
 
         } elseif ($data_training[$k][12] == 3) {
-          $certainSumMembershipDegree['tinggi']['umur']['muda'] = $certainSumMembershipDegree['tinggi']['umur']['muda'] + $membershipDegree['umur']['muda'][$k];
-          $certainSumMembershipDegree['tinggi']['umur']['tua'] = $certainSumMembershipDegree['tinggi']['umur']['tua'] + $membershipDegree['umur']['tua'][$k];
-          $certainSumMembershipDegree['tinggi']['sex']['lk'] = $certainSumMembershipDegree['tinggi']['sex']['lk'] + $membershipDegree['sex']['lk'][$k];
-          $certainSumMembershipDegree['tinggi']['sex']['pr'] = $certainSumMembershipDegree['tinggi']['sex']['pr'] + $membershipDegree['sex']['pr'][$k];
-          $certainSumMembershipDegree['tinggi']['td_sistol']['normal'] = $certainSumMembershipDegree['tinggi']['td_sistol']['normal'] + $membershipDegree['td_sistol']['normal'][$k];
-          $certainSumMembershipDegree['tinggi']['td_sistol']['prahipertensi'] = $certainSumMembershipDegree['tinggi']['td_sistol']['prahipertensi'] + $membershipDegree['td_sistol']['prahipertensi'][$k];
-          $certainSumMembershipDegree['tinggi']['td_sistol']['hipertensi'] = $certainSumMembershipDegree['tinggi']['td_sistol']['hipertensi'] + $membershipDegree['td_sistol']['hipertensi'][$k];
-          $certainSumMembershipDegree['tinggi']['td_diastol']['normal'] = $certainSumMembershipDegree['tinggi']['td_diastol']['normal'] + $membershipDegree['td_diastol']['normal'][$k];
-          $certainSumMembershipDegree['tinggi']['td_diastol']['prahipertensi'] = $certainSumMembershipDegree['tinggi']['td_diastol']['prahipertensi'] + $membershipDegree['td_diastol']['prahipertensi'][$k];
-          $certainSumMembershipDegree['tinggi']['td_diastol']['hipertensi'] = $certainSumMembershipDegree['tinggi']['td_diastol']['hipertensi'] + $membershipDegree['td_diastol']['hipertensi'][$k];
-          $certainSumMembershipDegree['tinggi']['lingkar_perut']['kecil'] = $certainSumMembershipDegree['tinggi']['lingkar_perut']['kecil'] + $membershipDegree['lingkar_perut']['kecil'][$k];
-          $certainSumMembershipDegree['tinggi']['lingkar_perut']['besar'] = $certainSumMembershipDegree['tinggi']['lingkar_perut']['besar'] + $membershipDegree['lingkar_perut']['besar'][$k];
-          $certainSumMembershipDegree['tinggi']['bmi']['normal'] = $certainSumMembershipDegree['tinggi']['bmi']['normal'] + $membershipDegree['bmi']['normal'][$k];
-          $certainSumMembershipDegree['tinggi']['bmi']['ow'] = $certainSumMembershipDegree['tinggi']['bmi']['ow'] + $membershipDegree['bmi']['ow'][$k];
-          $certainSumMembershipDegree['tinggi']['merokok']['ya'] = $certainSumMembershipDegree['tinggi']['merokok']['ya'] + $membershipDegree['merokok']['ya'][$k];
-          $certainSumMembershipDegree['tinggi']['merokok']['tdk'] = $certainSumMembershipDegree['tinggi']['merokok']['tdk'] + $membershipDegree['merokok']['tdk'][$k];
-          $certainSumMembershipDegree['tinggi']['makanan_berlemak']['sering'] = $certainSumMembershipDegree['tinggi']['makanan_berlemak']['sering'] + $membershipDegree['makanan_berlemak']['sering'][$k];
-          $certainSumMembershipDegree['tinggi']['makanan_berlemak']['jarang'] = $certainSumMembershipDegree['tinggi']['makanan_berlemak']['jarang'] + $membershipDegree['makanan_berlemak']['jarang'][$k];
-          $certainSumMembershipDegree['tinggi']['k_gula']['>4sdm'] = $certainSumMembershipDegree['tinggi']['k_gula']['>4sdm'] + $membershipDegree['k_gula']['>4sdm'][$k];
-          $certainSumMembershipDegree['tinggi']['k_gula']['<=4sdm'] = $certainSumMembershipDegree['tinggi']['k_gula']['<=4sdm'] + $membershipDegree['k_gula']['<=4sdm'][$k];
-          $certainSumMembershipDegree['tinggi']['k_garam']['>1sdt'] = $certainSumMembershipDegree['tinggi']['k_garam']['>1sdt'] + $membershipDegree['k_garam']['>1sdt'][$k];
-          $certainSumMembershipDegree['tinggi']['k_garam']['<=1sdt'] = $certainSumMembershipDegree['tinggi']['k_garam']['<=1sdt'] + $membershipDegree['k_garam']['<=1sdt'][$k];
-          $certainSumMembershipDegree['tinggi']['olahraga']['ya'] = $certainSumMembershipDegree['tinggi']['olahraga']['ya'] + $membershipDegree['olahraga']['ya'][$k];
-          $certainSumMembershipDegree['tinggi']['olahraga']['tdk'] = $certainSumMembershipDegree['tinggi']['olahraga']['tdk'] + $membershipDegree['olahraga']['tdk'][$k];
-          $certainSumMembershipDegree['tinggi']['k_kafein']['tdk'] = $certainSumMembershipDegree['tinggi']['k_kafein']['tdk'] + $membershipDegree['k_kafein']['tdk'][$k];
-          $certainSumMembershipDegree['tinggi']['k_kafein']['<=3sdt'] = $certainSumMembershipDegree['tinggi']['k_kafein']['<=3sdt'] + $membershipDegree['k_kafein']['<=3sdt'][$k];
-          $certainSumMembershipDegree['tinggi']['k_kafein']['>3sdt'] = $certainSumMembershipDegree['tinggi']['k_kafein']['>3sdt'] + $membershipDegree['k_kafein']['>3sdt'][$k];
+          $certainSumMembershipDegree[2][0] += $membershipDegree['umur']['muda'][$k];
+          $certainSumMembershipDegree[2][1] += $membershipDegree['umur']['tua'][$k];
+          $certainSumMembershipDegree[2][2] += $membershipDegree['sex']['lk'][$k];
+          $certainSumMembershipDegree[2][3] += $membershipDegree['sex']['pr'][$k];
+          $certainSumMembershipDegree[2][4] += $membershipDegree['td_sistol']['normal'][$k];
+          $certainSumMembershipDegree[2][5] += $membershipDegree['td_sistol']['prahipertensi'][$k];
+          $certainSumMembershipDegree[2][6] += $membershipDegree['td_sistol']['hipertensi'][$k];
+          $certainSumMembershipDegree[2][7] += $membershipDegree['td_diastol']['normal'][$k];
+          $certainSumMembershipDegree[2][8] += $membershipDegree['td_diastol']['prahipertensi'][$k];
+          $certainSumMembershipDegree[2][9] += $membershipDegree['td_diastol']['hipertensi'][$k];
+          $certainSumMembershipDegree[2][10] += $membershipDegree['lingkar_perut']['kecil'][$k];
+          $certainSumMembershipDegree[2][11] += $membershipDegree['lingkar_perut']['besar'][$k];
+          $certainSumMembershipDegree[2][12] += $membershipDegree['bmi']['normal'][$k];
+          $certainSumMembershipDegree[2][13] += $membershipDegree['bmi']['ow'][$k];
+          $certainSumMembershipDegree[2][14] += $membershipDegree['merokok']['ya'][$k];
+          $certainSumMembershipDegree[2][15] += $membershipDegree['merokok']['tdk'][$k];
+          $certainSumMembershipDegree[2][16] += $membershipDegree['makanan_berlemak']['sering'][$k];
+          $certainSumMembershipDegree[2][17] += $membershipDegree['makanan_berlemak']['jarang'][$k];
+          $certainSumMembershipDegree[2][18] += $membershipDegree['k_gula']['>4sdm'][$k];
+          $certainSumMembershipDegree[2][19] += $membershipDegree['k_gula']['<=4sdm'][$k];
+          $certainSumMembershipDegree[2][20] += $membershipDegree['k_garam']['>1sdt'][$k];
+          $certainSumMembershipDegree[2][21] += $membershipDegree['k_garam']['<=1sdt'][$k];
+          $certainSumMembershipDegree[2][22] += $membershipDegree['olahraga']['ya'][$k];
+          $certainSumMembershipDegree[2][23] += $membershipDegree['olahraga']['tdk'][$k];
+          $certainSumMembershipDegree[2][24] += $membershipDegree['k_kafein']['tdk'][$k];
+          $certainSumMembershipDegree[2][25] += $membershipDegree['k_kafein']['<=3sdt'][$k];
+          $certainSumMembershipDegree[2][26] += $membershipDegree['k_kafein']['>3sdt'][$k];
 
         }
       }
 
+      //entropy masing masing atribut
+$total = [];
+for ($i=0; $i < count($certainSumMembershipDegree[0]); $i++) {
+    $x = 0;
+    for ($j=0; $j < count($certainSumMembershipDegree); $j++) {
+        $x += -(($certainSumMembershipDegree[$j][$i]/$sumMembershipDegree[$i])*log(($certainSumMembershipDegree[$j][$i]/$sumMembershipDegree[$i]),2));
+    }
+    $total[$i] =$x;
+    echo "Total atribut " + $total[$i];
+}
 
 
-      echo '<pre>' . var_export($item, true) . '</pre>';
+
+
+
+
+
+
+
+
+
+
+      // echo '<pre>' . var_export($item, true) . '</pre>';
 
       // echo '<pre>' . var_export($kromosom, true) . '</pre>';
 
@@ -564,5 +672,18 @@ class User extends CI_Controller {
 
 		}
   }
+
+  // function createTree($list, $parent){
+  //   $tree = array();
+  //   foreach ($parent as $k=>$l){
+  //       if(isset($list[$l['id']])){
+  //           $l['children'] = createTree($list, $list[$l['id']]);
+  //       }
+  //       $tree[] = $l;
+  //   }
+  //   return $tree;
+  // }
+
+
 }
 ?>
