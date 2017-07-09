@@ -224,9 +224,14 @@ class User extends CI_Controller {
             $jmlKelas3++;
           }
         }
-        $entropyS = -( (($jmlKelas1 / count($data_training)) * (log($jmlKelas1, 2) / count($data_training))) -
-                    (($jmlKelas2 / count($data_training)) * (log($jmlKelas2, 2) / count($data_training))) -
-                    (($jmlKelas3 / count($data_training)) * (log($jmlKelas3, 2) / count($data_training))) );
+
+        $log[0] = $jmlKelas1 / count($data_training);
+        $log[1] = $jmlKelas2 / count($data_training);
+        $log[2] = $jmlKelas3 / count($data_training);
+
+        $entropyS = -(($jmlKelas1 / count($data_training)) * (log($log[0], 2))) -
+                    (($jmlKelas2 / count($data_training)) * (log($log[1], 2))) -
+                    (($jmlKelas3 / count($data_training)) * (log($log[2], 2)));
 
 
         // START LOOPING POP SIZE UNTUK CARI AKURASI TERBAIK
@@ -424,7 +429,7 @@ class User extends CI_Controller {
       // END OF LOOPING GENERASI
 
         // $sum = 0;
-        $sumMembershipDegree[0] = array_sum($membershipDegree['umur']['muda']);
+          $sumMembershipDegree[0] = array_sum($membershipDegree['umur']['muda']);
         // echo $sumMembershipDegree[0];
         $sumMembershipDegree[1] = array_sum($membershipDegree['umur']['tua']);
         $sumMembershipDegree[2] = array_sum($membershipDegree['sex']['lk']);
@@ -457,91 +462,97 @@ class User extends CI_Controller {
       $certainSumMembershipDegree =[[]];
 
       //rendah
-        $certainSumMembershipDegree[0][0] =0; //umur muda
-        $certainSumMembershipDegree[0][1] =0; // umur tua
-        $certainSumMembershipDegree[0][2] =0; //sex lk
-        $certainSumMembershipDegree[0][3] =0; //sex pr
-        $certainSumMembershipDegree[0][4] =0; //td_sistol normal
-        $certainSumMembershipDegree[0][5] =0; //td_sistol prahipertensi
-        $certainSumMembershipDegree[0][6] =0; //td_sistol hipertensi
-        $certainSumMembershipDegree[0][7] =0; //td_distol normal
-        $certainSumMembershipDegree[0][8] = 0; //td_distol prahipertensi
-        $certainSumMembershipDegree[0][9] =0; //td_distol hipertensi
-        $certainSumMembershipDegree[0][10] =0; //lingkar_perut kecil
-        $certainSumMembershipDegree[0][11] = 0; //lingkar_perut besar
-        $certainSumMembershipDegree[0][12] = 0; //bmi normal
-        $certainSumMembershipDegree[0][13] = 0; //bmi ow
-        $certainSumMembershipDegree[0][14] = 0; //merokok ya
-        $certainSumMembershipDegree[0][15] = 0; //merokok tidak
-        $certainSumMembershipDegree[0][16] = 0; //makanan_berlemak sering
-        $certainSumMembershipDegree[0][17] = 0; //makanan_berlemak jarang
-        $certainSumMembershipDegree[0][18] = 0; //k_gula >4sdm
-        $certainSumMembershipDegree[0][19] = 0; //k_gula <=4sdm
-        $certainSumMembershipDegree[0][20] = 0; //k_garam >1sdt
-        $certainSumMembershipDegree[0][21] = 0; //k_garam <=1sdt
-        $certainSumMembershipDegree[0][22] = 0; //olahraga ya
-        $certainSumMembershipDegree[0][23] = 0; //olahraga tidak
-        $certainSumMembershipDegree[0][24] = 0; //kafein tdk
-        $certainSumMembershipDegree[0][25] = 0; //kafein <=3sdt
-        $certainSumMembershipDegree[0][26] = 0; //kafein >3sdt
 
-//sedang
-        $certainSumMembershipDegree[1][0] =0; //umur muda
-        $certainSumMembershipDegree[1][1] =0; // umur tua
-        $certainSumMembershipDegree[1][2] =0; //sex lk
-        $certainSumMembershipDegree[1][3] =0; //sex pr
-        $certainSumMembershipDegree[1][4] =0; //td_sistol normal
-        $certainSumMembershipDegree[1][5] =0; //td_sistol prahipertensi
-        $certainSumMembershipDegree[1][6] =0; //td_sistol hipertensi
-        $certainSumMembershipDegree[1][7] =0; //td_distol normal
-        $certainSumMembershipDegree[1][8] = 0; //td_distol prahipertensi
-        $certainSumMembershipDegree[1][9] =0; //td_distol hipertensi
-        $certainSumMembershipDegree[1][10] =0; //lingkar_perut kecil
-        $certainSumMembershipDegree[1][11] = 0; //lingkar_perut besar
-        $certainSumMembershipDegree[1][12] = 0; //bmi normal
-        $certainSumMembershipDegree[1][13] = 0; //bmi ow
-        $certainSumMembershipDegree[1][14] = 0; //merokok ya
-        $certainSumMembershipDegree[1][15] = 0; //merokok tidak
-        $certainSumMembershipDegree[1][16] = 0; //makanan_berlemak sering
-        $certainSumMembershipDegree[1][17] = 0; //makanan_berlemak jarang
-        $certainSumMembershipDegree[1][18] = 0; //k_gula >4sdm
-        $certainSumMembershipDegree[1][19] = 0; //k_gula <=4sdm
-        $certainSumMembershipDegree[1][20] = 0; //k_garam >1sdt
-        $certainSumMembershipDegree[1][21] = 0; //k_garam <=1sdt
-        $certainSumMembershipDegree[1][22] = 0; //olahraga ya
-        $certainSumMembershipDegree[1][23] = 0; //olahraga tidak
-        $certainSumMembershipDegree[1][24] = 0; //kafein tdk
-        $certainSumMembershipDegree[1][25] = 0; //kafein <=3sdt
-        $certainSumMembershipDegree[1][26] = 0; //kafein >3sdt
-
-//tinggi
-        $certainSumMembershipDegree[2][0] =0; //umur muda
-        $certainSumMembershipDegree[2][1] =0; // umur tua
-        $certainSumMembershipDegree[2][2] =0; //sex lk
-        $certainSumMembershipDegree[2][3] =0; //sex pr
-        $certainSumMembershipDegree[2][4] =0; //td_sistol normal
-        $certainSumMembershipDegree[2][5] =0; //td_sistol prahipertensi
-        $certainSumMembershipDegree[2][6] =0; //td_sistol hipertensi
-        $certainSumMembershipDegree[2][7] =0; //td_distol normal
-        $certainSumMembershipDegree[2][8] = 0; //td_distol prahipertensi
-        $certainSumMembershipDegree[2][9] =0; //td_distol hipertensi
-        $certainSumMembershipDegree[2][10] =0; //lingkar_perut kecil
-        $certainSumMembershipDegree[2][11] = 0; //lingkar_perut besar
-        $certainSumMembershipDegree[2][12] = 0; //bmi normal
-        $certainSumMembershipDegree[2][13] = 0; //bmi ow
-        $certainSumMembershipDegree[2][14] = 0; //merokok ya
-        $certainSumMembershipDegree[2][15] = 0; //merokok tidak
-        $certainSumMembershipDegree[2][16] = 0; //makanan_berlemak sering
-        $certainSumMembershipDegree[2][17] = 0; //makanan_berlemak jarang
-        $certainSumMembershipDegree[2][18] = 0; //k_gula >4sdm
-        $certainSumMembershipDegree[2][19] = 0; //k_gula <=4sdm
-        $certainSumMembershipDegree[2][20] = 0; //k_garam >1sdt
-        $certainSumMembershipDegree[2][21] = 0; //k_garam <=1sdt
-        $certainSumMembershipDegree[2][22] = 0; //olahraga ya
-        $certainSumMembershipDegree[2][23] = 0; //olahraga tidak
-        $certainSumMembershipDegree[2][24] = 0; //kafein tdk
-        $certainSumMembershipDegree[2][25] = 0; //kafein <=3sdt
-        $certainSumMembershipDegree[2][26] = 0; //kafein >3sdt
+      for ($jb=0; $jb < 3; $jb++) {
+        for ($jba=0; $jba < count($sumMembershipDegree); $jba++) {
+          $certainSumMembershipDegree[$jb][$jba] = 0;
+        }
+      }
+//         $certainSumMembershipDegree[0][0] =0; //umur muda
+//         $certainSumMembershipDegree[0][1] =0; // umur tua
+//         $certainSumMembershipDegree[0][2] =0; //sex lk
+//         $certainSumMembershipDegree[0][3] =0; //sex pr
+//         $certainSumMembershipDegree[0][4] =0; //td_sistol normal
+//         $certainSumMembershipDegree[0][5] =0; //td_sistol prahipertensi
+//         $certainSumMembershipDegree[0][6] =0; //td_sistol hipertensi
+//         $certainSumMembershipDegree[0][7] =0; //td_distol normal
+//         $certainSumMembershipDegree[0][8] = 0; //td_distol prahipertensi
+//         $certainSumMembershipDegree[0][9] =0; //td_distol hipertensi
+//         $certainSumMembershipDegree[0][10] =0; //lingkar_perut kecil
+//         $certainSumMembershipDegree[0][11] = 0; //lingkar_perut besar
+//         $certainSumMembershipDegree[0][12] = 0; //bmi normal
+//         $certainSumMembershipDegree[0][13] = 0; //bmi ow
+//         $certainSumMembershipDegree[0][14] = 0; //merokok ya
+//         $certainSumMembershipDegree[0][15] = 0; //merokok tidak
+//         $certainSumMembershipDegree[0][16] = 0; //makanan_berlemak sering
+//         $certainSumMembershipDegree[0][17] = 0; //makanan_berlemak jarang
+//         $certainSumMembershipDegree[0][18] = 0; //k_gula >4sdm
+//         $certainSumMembershipDegree[0][19] = 0; //k_gula <=4sdm
+//         $certainSumMembershipDegree[0][20] = 0; //k_garam >1sdt
+//         $certainSumMembershipDegree[0][21] = 0; //k_garam <=1sdt
+//         $certainSumMembershipDegree[0][22] = 0; //olahraga ya
+//         $certainSumMembershipDegree[0][23] = 0; //olahraga tidak
+//         $certainSumMembershipDegree[0][24] = 0; //kafein tdk
+//         $certainSumMembershipDegree[0][25] = 0; //kafein <=3sdt
+//         $certainSumMembershipDegree[0][26] = 0; //kafein >3sdt
+//
+// //sedang
+//         $certainSumMembershipDegree[1][0] =0; //umur muda
+//         $certainSumMembershipDegree[1][1] =0; // umur tua
+//         $certainSumMembershipDegree[1][2] =0; //sex lk
+//         $certainSumMembershipDegree[1][3] =0; //sex pr
+//         $certainSumMembershipDegree[1][4] =0; //td_sistol normal
+//         $certainSumMembershipDegree[1][5] =0; //td_sistol prahipertensi
+//         $certainSumMembershipDegree[1][6] =0; //td_sistol hipertensi
+//         $certainSumMembershipDegree[1][7] =0; //td_distol normal
+//         $certainSumMembershipDegree[1][8] = 0; //td_distol prahipertensi
+//         $certainSumMembershipDegree[1][9] =0; //td_distol hipertensi
+//         $certainSumMembershipDegree[1][10] =0; //lingkar_perut kecil
+//         $certainSumMembershipDegree[1][11] = 0; //lingkar_perut besar
+//         $certainSumMembershipDegree[1][12] = 0; //bmi normal
+//         $certainSumMembershipDegree[1][13] = 0; //bmi ow
+//         $certainSumMembershipDegree[1][14] = 0; //merokok ya
+//         $certainSumMembershipDegree[1][15] = 0; //merokok tidak
+//         $certainSumMembershipDegree[1][16] = 0; //makanan_berlemak sering
+//         $certainSumMembershipDegree[1][17] = 0; //makanan_berlemak jarang
+//         $certainSumMembershipDegree[1][18] = 0; //k_gula >4sdm
+//         $certainSumMembershipDegree[1][19] = 0; //k_gula <=4sdm
+//         $certainSumMembershipDegree[1][20] = 0; //k_garam >1sdt
+//         $certainSumMembershipDegree[1][21] = 0; //k_garam <=1sdt
+//         $certainSumMembershipDegree[1][22] = 0; //olahraga ya
+//         $certainSumMembershipDegree[1][23] = 0; //olahraga tidak
+//         $certainSumMembershipDegree[1][24] = 0; //kafein tdk
+//         $certainSumMembershipDegree[1][25] = 0; //kafein <=3sdt
+//         $certainSumMembershipDegree[1][26] = 0; //kafein >3sdt
+//
+// //tinggi
+//         $certainSumMembershipDegree[2][0] =0; //umur muda
+//         $certainSumMembershipDegree[2][1] =0; // umur tua
+//         $certainSumMembershipDegree[2][2] =0; //sex lk
+//         $certainSumMembershipDegree[2][3] =0; //sex pr
+//         $certainSumMembershipDegree[2][4] =0; //td_sistol normal
+//         $certainSumMembershipDegree[2][5] =0; //td_sistol prahipertensi
+//         $certainSumMembershipDegree[2][6] =0; //td_sistol hipertensi
+//         $certainSumMembershipDegree[2][7] =0; //td_distol normal
+//         $certainSumMembershipDegree[2][8] = 0; //td_distol prahipertensi
+//         $certainSumMembershipDegree[2][9] =0; //td_distol hipertensi
+//         $certainSumMembershipDegree[2][10] =0; //lingkar_perut kecil
+//         $certainSumMembershipDegree[2][11] = 0; //lingkar_perut besar
+//         $certainSumMembershipDegree[2][12] = 0; //bmi normal
+//         $certainSumMembershipDegree[2][13] = 0; //bmi ow
+//         $certainSumMembershipDegree[2][14] = 0; //merokok ya
+//         $certainSumMembershipDegree[2][15] = 0; //merokok tidak
+//         $certainSumMembershipDegree[2][16] = 0; //makanan_berlemak sering
+//         $certainSumMembershipDegree[2][17] = 0; //makanan_berlemak jarang
+//         $certainSumMembershipDegree[2][18] = 0; //k_gula >4sdm
+//         $certainSumMembershipDegree[2][19] = 0; //k_gula <=4sdm
+//         $certainSumMembershipDegree[2][20] = 0; //k_garam >1sdt
+//         $certainSumMembershipDegree[2][21] = 0; //k_garam <=1sdt
+//         $certainSumMembershipDegree[2][22] = 0; //olahraga ya
+//         $certainSumMembershipDegree[2][23] = 0; //olahraga tidak
+//         $certainSumMembershipDegree[2][24] = 0; //kafein tdk
+//         $certainSumMembershipDegree[2][25] = 0; //kafein <=3sdt
+//         $certainSumMembershipDegree[2][26] = 0; //kafein >3sdt
 
       for ($k=0; $k < count($data_training); $k++) {
         if ($data_training[$k][12] == 1) {
@@ -635,27 +646,101 @@ class User extends CI_Controller {
       }
 
       //entropy masing masing atribut
-$total = [];
-for ($i=0; $i < count($certainSumMembershipDegree[0]); $i++) {
-    $x = 0;
-    for ($j=0; $j < count($certainSumMembershipDegree); $j++) {
-        $x += -(($certainSumMembershipDegree[$j][$i]/$sumMembershipDegree[$i])*log(($certainSumMembershipDegree[$j][$i]/$sumMembershipDegree[$i]),2));
-    }
-    $total[$i] =$x;
-    echo "Total atribut " + $total[$i];
-}
+      $total = [];
+      for ($jc=0; $jc < count($certainSumMembershipDegree[0]); $jc++) {
+          $x = 0;
+          for ($jca=0; $jca < count($certainSumMembershipDegree); $jca++) {
+              $x += -(($certainSumMembershipDegree[$jca][$jc]/$sumMembershipDegree[$jc])*log(($certainSumMembershipDegree[$jca][$jc]/$sumMembershipDegree[$jc]),2));
+          }
+          $total[$jc] =$x;
+          // echo "Total atribut " + $total[$i];
+      }
+
+      for ($je=0; $je < count($total) ; $je++) {
+        if(is_nan($total[$je])) {
+          $total[$je] = 0;
+        }
+      }
+
+
+      $loop = 0;
+
+
+      if($loop == 0) {
+        $root = 99999;
+        $childNode = 99999;
+      }
+
+      $informationGain = array_fill(0, 12, null);
+
+      if($root != $informationGain[0] || $childNode != $informationGain[0] || $loop == 0) {
+        $informationGain[0] = $entropyS - (($sumMembershipDegree[0] / count($data_training)) * $total[0]) - (($sumMembershipDegree[1] / count($data_training)) * $total[1]) ;
+      } if ($root != $informationGain[1] || $childNode != $informationGain[1] || $loop == 0) {
+        $informationGain[1] = $entropyS - (($sumMembershipDegree[2] / count($data_training)) * $total[2]) - (($sumMembershipDegree[3] / count($data_training)) * $total[3]) ;
+      } if ($root != $informationGain[2] || $childNode != $informationGain[2] || $loop == 0) {
+        $informationGain[2] = $entropyS - (($sumMembershipDegree[4] / count($data_training)) * $total[4]) - (($sumMembershipDegree[5] / count($data_training)) * $total[5]) - (($sumMembershipDegree[6] / count($data_training)) * $total[6]) ;
+      } if ($root != $informationGain[3] || $childNode != $informationGain[3] || $loop == 0) {
+        $informationGain[3] = $entropyS - (($sumMembershipDegree[7] / count($data_training)) * $total[7]) - (($sumMembershipDegree[8] / count($data_training)) * $total[8]) - (($sumMembershipDegree[9] / count($data_training)) * $total[9]) ;
+      } if ($root != $informationGain[4] || $childNode != $informationGain[4] || $loop == 0) {
+        $informationGain[4] = $entropyS - (($sumMembershipDegree[10] / count($data_training)) * $total[10]) - (($sumMembershipDegree[11] / count($data_training)) * $total[11]) ;
+      } if ($root != $informationGain[5] || $childNode != $informationGain[5] || $loop == 0) {
+        $informationGain[5] = $entropyS - (($sumMembershipDegree[12] / count($data_training)) * $total[12]) - (($sumMembershipDegree[13] / count($data_training)) * $total[13]) ;
+      } if ($root != $informationGain[6] || $childNode != $informationGain[6] || $loop == 0) {
+        $informationGain[6] = $entropyS - (($sumMembershipDegree[14] / count($data_training)) * $total[14]) - (($sumMembershipDegree[15] / count($data_training)) * $total[15]) ;
+      } if ($root != $informationGain[7] || $childNode != $informationGain[7] || $loop == 0) {
+        $informationGain[7] = $entropyS - (($sumMembershipDegree[16] / count($data_training)) * $total[16]) - (($sumMembershipDegree[17] / count($data_training)) * $total[17]) ;
+      } if ($root != $informationGain[8] || $childNode != $informationGain[8] || $loop == 0) {
+        $informationGain[8] = $entropyS - (($sumMembershipDegree[18] / count($data_training)) * $total[18]) - (($sumMembershipDegree[19] / count($data_training)) * $total[19]) ;
+      } if ($root != $informationGain[9] || $childNode != $informationGain[9] || $loop == 0) {
+        $informationGain[9] = $entropyS - (($sumMembershipDegree[20] / count($data_training)) * $total[20]) - (($sumMembershipDegree[21] / count($data_training)) * $total[21]) ;
+      } if ($root != $informationGain[10] || $childNode != $informationGain[10] || $loop == 0) {
+        $informationGain[10] = $entropyS - (($sumMembershipDegree[22] / count($data_training)) * $total[22]) - (($sumMembershipDegree[23] / count($data_training)) * $total[23]) ;
+      } if ($root != $informationGain[11] || $childNode != $informationGain[11] || $loop == 0) {
+        $informationGain[11] = $entropyS - (($sumMembershipDegree[24] / count($data_training)) * $total[24]) - (($sumMembershipDegree[25] / count($data_training)) * $total[25]) - (($sumMembershipDegree[26] / count($data_training)) * $total[26]) ;
+      }
+
+
+      if($loop == 0) {
+        $root = max($informationGain);
+      } else {
+        $childNode[$loop] = max($informationGain);
+      }
+
+      $temp = 0;
+      $proporsi = array_fill(0, 3, array_fill(0, 2, 0));
+
+      for ($jd=0; $jd < count($data_training); $jd++) {
+        if ($data_training[$jd][12] == 0) {
+          // 0 pertama proporsi kelas ke 0, 0 kedua atributnya
+          $proporsi[0][0] = $proporsi[0][0] + $membershipDegree['umur']['muda'][$jd];
+          $proporsi[0][1] = $proporsi[0][1] + $membershipDegree['umur']['tua'][$jd];
+        } elseif ($data_training[$jd][12] == 1) {
+          // 0 pertama proporsi kelas ke 0, 0 kedua atributnya
+          $proporsi[1][0] = $proporsi[1][0] + $membershipDegree['umur']['muda'][$jd];
+          $proporsi[1][1] = $proporsi[1][1] + $membershipDegree['umur']['tua'][$jd];
+        } elseif ($data_training[$jd][12] == 2) {
+          // 0 pertama proporsi kelas ke 0, 0 kedua atributnya
+          $proporsi[2][0] = $proporsi[2][0] + $membershipDegree['umur']['muda'][$jd];
+          $proporsi[2][1] = $proporsi[2][1] + $membershipDegree['umur']['tua'][$jd];
+        }
+      }
+
+      // for ($jf=0; $jf < count($proporsi); $jf++) {
+        $proporsiFinal[0][0] = ($proporsi[0][0] / ($proporsi[0][0] + $proporsi[1][0] + $proporsi[2][0])) * 100;
+        $proporsiFinal[0][1] = ($proporsi[0][1] / ($proporsi[0][1] + $proporsi[1][1] + $proporsi[2][1])) * 100;
+
+        $proporsiFinal[1][0] = ($proporsi[1][0] / ($proporsi[0][0] + $proporsi[1][0] + $proporsi[2][0])) * 100;
+        $proporsiFinal[1][1] = ($proporsi[1][1] / ($proporsi[0][1] + $proporsi[1][1] + $proporsi[2][1])) * 100;
+
+        $proporsiFinal[2][0] = ($proporsi[2][0] / ($proporsi[0][0] + $proporsi[1][0] + $proporsi[2][0])) * 100;
+        $proporsiFinal[2][1] = ($proporsi[2][1] / ($proporsi[0][1] + $proporsi[1][1] + $proporsi[2][1])) * 100;
+      // }
 
 
 
-
-
-
-
-
-
-
-
-
+      echo '<pre>' . var_export($informationGain, true) . '</pre>';
+      echo '<pre>' . var_export($proporsiFinal, true) . '</pre>';
+      // echo '<pre>' . var_export($sumEntropy, true) . '</pre>';
       // echo '<pre>' . var_export($item, true) . '</pre>';
 
       // echo '<pre>' . var_export($kromosom, true) . '</pre>';
