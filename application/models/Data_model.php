@@ -14,4 +14,13 @@ class Data_model extends CI_model {
 
     return $query->result();
 	}
+
+  public function get_all_rule()
+	{
+    $this->db->select('*');
+    $this->db->from('tb_rule');
+    $query = $this->db->get();
+
+    return $query->result();
+	}
 }

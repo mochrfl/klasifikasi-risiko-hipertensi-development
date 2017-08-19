@@ -18,6 +18,281 @@ class User extends CI_Controller {
 		$this->load->view('user/list_data', array('data_training' => $data['data_training']));
 	}
 
+  public function temp_proses_klasifikasi2() {
+    $generasi = 1;
+    $popSize = 7;
+
+
+
+    // get data training
+    $data['data_training'] = $this->data_model->get_all_data_training();
+    // get rule
+    $data['rule'] = $this->data_model->get_all_rule();
+
+    //AMBIL DATA TRAINING
+    $indexHelper = 0;
+    foreach ($data['data_training'] as $row) {
+      $data_training[$indexHelper][0] = $row->umur;
+      $data_training[$indexHelper][1] = $row->sex;
+      $data_training[$indexHelper][2] = $row->td_sistol;
+      $data_training[$indexHelper][3] = $row->td_diastol;
+      $data_training[$indexHelper][4] = $row->lingkar_perut;
+      $data_training[$indexHelper][5] = $row->tinggi_badan;
+      $data_training[$indexHelper][6] = $row->berat_badan;
+      $data_training[$indexHelper][5] = $row->bmi;
+      $data_training[$indexHelper][6] = $row->merokok;
+      $data_training[$indexHelper][7] = $row->makanan_berlemak;
+      $data_training[$indexHelper][8] = $row->k_gula;
+      $data_training[$indexHelper][9] = $row->k_garam;
+      $data_training[$indexHelper][10] = $row->olahraga;
+      $data_training[$indexHelper][11] = $row->k_kafein;
+      $data_training[$indexHelper][12] = $row->risiko_hipertensi;
+      $indexHelper++;
+    }
+
+    //AMBIL RULE
+    $indexHelper = 0;
+    foreach ($data['rule'] as $row) {
+      $rule[$indexHelper][0] = $row->umur;
+      $rule[$indexHelper][1] = $row->sex;
+      $rule[$indexHelper][2] = $row->tekanan_datah;
+      $rule[$indexHelper][3] = $row->lingkar_perut;
+      $rule[$indexHelper][4] = $row->tinggi_badan;
+      $rule[$indexHelper][5] = $row->berat_badan;
+      $rule[$indexHelper][6] = $row->bmi;
+      $rule[$indexHelper][7] = $row->merokok;
+      $rule[$indexHelper][8] = $row->makanan_berlemak;
+      $rule[$indexHelper][9] = $row->k_gula;
+      $rule[$indexHelper][10] = $row->k_garam;
+      $rule[$indexHelper][11] = $row->olahraga;
+      $rule[$indexHelper][12] = $row->k_kafein;
+      $rule[$indexHelper][13] = $row->risiko_hipertensi;
+      $indexHelper++;
+    }
+
+    // random kromosom
+    for ($a=0; $a < $popSize ; $a++) {
+			$initKromosom[$a][0] = mt_rand(20,37); // a1
+			$initKromosom[$a][1] = mt_rand(38,100); // a2
+			$initKromosom[$a][2] = mt_rand(60,89); // b1
+      $initKromosom[$a][3] = mt_rand(90,120); // b2
+      $initKromosom[$a][4] = mt_rand(16,24); // c1
+      $initKromosom[$a][5] = mt_rand(25,30); // c2
+      // $initKromosom[$a][6] = mt_rand(140,200); // d1
+      // $initKromosom[$a][7] = mt_rand(201,230); // d2
+      // $initKromosom[$a][8] = mt_rand(231,300); // d3
+      $initKromosom[$a][6] = mt_rand(20,34); // e1
+      $initKromosom[$a][7] = mt_rand(35,54); // e2
+      $initKromosom[$a][8] = mt_rand(55,59); // e3
+      $initKromosom[$a][9] = mt_rand(60,70); // e4
+    }
+
+      //inisialisasi variabel
+      $kromosom = [[]];
+  		$kromosomSorted = [[]];
+  		$offSpringC = [[]];
+  		$offSpringM = [[]];
+
+      // LOOPING GENERASI START
+      for ($b=0; $b < $generasi; $b++) {
+
+        //cek perputaran generasi
+        if($b < 1) {
+  				for ($ia=0; $ia < $popSize ; $ia++) {
+  					for ($ja=0; $ja < count(current($initKromosom)); $ja++) {
+  						$kromosom[$ia][$ja] = $initKromosom[$ia][$ja];
+  					}
+  				}
+  			} elseif($b > 0) {
+  				for ($ib=0; $ib < $popSize ; $ib++) {
+  					for ($jb=0; $jb < count(current($initKromosom)); $jb++) {
+  						$kromosom[$ib][$jb] = $kromosomBaru[$ib][$jb];
+  					}
+  				}
+  			}
+
+        // random number dan di shuffle
+        for ($wk=0; $wk < $popSize; $wk++) {
+  				$randNumber[] = $wk;
+  			}
+  			shuffle($randNumber);
+  			for ($id=0; $id < 2 ; $id++) {
+  				$choosedParentC[$id] = $randNumber[$id];
+  			}
+
+        //random gen index terpilih crossover
+        $choosedGenIndex = mt_rand(0,9);
+
+        // inisialisasi variabel untuk crossover
+        $offSpringCTemp = [[]];
+        $offSpringCTemp = $kromosom;
+
+        //proses crossover
+        $indexHelper = 0;
+        for ($ie=$choosedGenIndex; $ie < count(current($kromosom)); $ie++) {
+          $tempHelper = $offSpringCTemp[$choosedParentC[0]][$ie];
+          $offSpringCTemp[$choosedParentC[0]][$ie] = $offSpringCTemp[$choosedParentC[1]][$ie];
+          $offSpringCTemp[$choosedParentC[1]][$ie] = $tempHelper;
+        }
+        for ($ifa=0; $ifa < count(current($offSpringCTemp)); $ifa++) {
+          $offSpringC[0][$ifa] = $offSpringCTemp[$choosedParentC[0]][$ifa];
+          $offSpringC[1][$ifa] = $offSpringCTemp[$choosedParentC[1]][$ifa];
+        }
+
+        //random parent terpilih mutasi
+        $choosedParentM = mt_rand(0,count($popSize)-1);
+        for ($fb=0; $fb < count(current($kromosom)); $fb++) {
+  				$randNumberGenMutation[] = $fb;
+  			}
+        shuffle($randNumberGenMutation);
+        for ($ig=0; $ig < 2; $ig++) {
+          $choosedGenIndexMutation[$ig] = $randNumberGenMutation[$ig];
+        }
+
+        //inisialisas variabel untuk mutasi
+        $offSpringMTemp = [[]];
+        $offSpringMTemp = $kromosom;
+
+        // proses mutasi
+        $tempHelper2 = $offSpringMTemp[$choosedParentM][$choosedGenIndexMutation[0]];
+        $offSpringMTemp[$choosedParentM][$choosedGenIndexMutation[0]] = $offSpringMTemp[$choosedParentM][$choosedGenIndexMutation[1]];
+        $offSpringMTemp[$choosedParentM][$choosedGenIndexMutation[1]] = $tempHelper2;
+        for ($ih=0; $ih < count(current($offSpringMTemp)); $ih++) {
+          $offSpringM[0][$ih] = $offSpringMTemp[$choosedParentM][$ih];
+        }
+
+        // validasi hasil mutasi
+        for ($ih=0; $ih < count(current($offSpringMTemp)); $ih++) {
+          if ($ih % 2 != 0 && $ih < 6) {
+            if($offSpringM[0][$ih] < $offSpringM[0][$ih-1]) {
+              for ($iha=0; $iha < count(current($offSpringMTemp)); $iha++) {
+                $offSpringM[0][$ih] = $kromosom[$choosedParentM][$ih];
+              }
+            }
+          } elseif($ih % 2 == 0 && $ih < 6) {
+            if($offSpringM[0][$ih] > $offSpringM[0][$ih+1]) {
+              for ($ihb=0; $ihb < count(current($offSpringMTemp)); $ihb++) {
+                $offSpringM[0][$ih] = $kromosom[$choosedParentM][$ih];
+              }
+            }
+          } elseif($ih % 2 != 0 && $ih > 5) {
+            if($ih != 9) {
+              if($offSpringM[0][$ih] < $offSpringM[0][$ih-1]) {
+                for ($iha=0; $iha < count(current($offSpringMTemp)); $iha++) {
+                  $offSpringM[0][$ih] = $kromosom[$choosedParentM][$ih];
+                }
+              } elseif($offSpringM[0][$ih] > $offSpringM[0][$ih+1]) {
+                for ($iha=0; $iha < count(current($offSpringMTemp)); $iha++) {
+                  $offSpringM[0][$ih] = $kromosom[$choosedParentM][$ih];
+                }
+              }
+            } elseif($ih == 9) {
+              if($offSpringM[0][$ih] < $offSpringM[0][$ih-1]) {
+                for ($iha=0; $iha < count(current($offSpringMTemp)); $iha++) {
+                  $offSpringM[0][$ih] = $kromosom[$choosedParentM][$ih];
+                }
+              }
+            }
+          } elseif($ih % 2 == 0 && $ih > 5) {
+            if($offSpringM[0][$ih] > $offSpringM[0][$ih+1]) {
+              for ($ihb=0; $ihb < count(current($offSpringMTemp)); $ihb++) {
+                $offSpringM[0][$ih] = $kromosom[$choosedParentM][$ih];
+              }
+            } elseif($offSpringM[0][$ih] > $offSpringM[0][$ih+1]) {
+              for ($iha=0; $iha < count(current($offSpringMTemp)); $iha++) {
+                $offSpringM[0][$ih] = $kromosom[$choosedParentM][$ih];
+              }
+            }
+          }
+        }
+
+        //masukin ke kromosom baru dari kromosom + crossover + mutasi
+        $kromosomBaruLength = count($kromosom)+count($offSpringC)+count($offSpringM);
+
+        $d = 0;
+  			$e = 0;
+
+  			$kromosomBaru = [[]];
+  			for($ih=0;$ih<$kromosomBaruLength;$ih++) {
+  				if($ih >= count($kromosom) && $ih < (count($kromosom) + count($offSpringC)) ) {
+            for ($iha=0; $iha < count(current($kromosom)) ; $iha++) {
+              $kromosomBaru[$ih][$iha] = $offSpringC[$d][$iha];
+            }
+						$d++;
+  				} elseif($ih > count($kromosom) &&  $ih >= (count($kromosom) + count($offSpringC)) ) {
+            for ($ihb=0; $ihb < count(current($kromosom)); $ihb++) {
+              $kromosomBaru[$ih][$ihb] = $offSpringC[$e][$ihb];
+            }
+  					$e++;
+  				} elseif($ih < count($kromosom)) {
+            for ($ihc=0; $ihc < count(current($kromosom)); $ihc++) {
+              $kromosomBaru[$ih][$ihc] = $kromosom[$ih][$ihc];
+            }
+  				}
+        }
+
+        //MEMBERSHIP DEGREE RULE
+        for ($j=0; $j < count($data_training) ; $j++) {
+
+          for ($ja=0; $ja < count($kromosomBaru); $ja++) {
+
+            for ($i=0; $i < count($rule); $i++) {
+              if(strcmp($rule[$i][0], 'muda')) {
+                if($data_training[$j][0] < $kromosomBaru[$ja][0]) {
+                  $membershipDegree[$i][0] = 1;
+                } elseif ( ($kromosomBaru[$ja][0] < $data_training[$j][0]) && ($data_training[$j][0] < $kromosomBaru[$ja][1]) ) {
+                  $membershipDegree[$i][0] = ($kromosomBaru[$ja][1] - $data_training[$j][0]) / ($kromosomBaru[$ja][1] - $kromosomBaru[$ja][0]);
+                } else {
+                  $membershipDegree[$i][0] = 0;
+                }
+              } elseif(strcmp($rule[$i][0], 'tua')) {
+                //rumus membership degree tua
+              } else {
+                $membershipDegree[$i][0] = 9999;
+              }
+
+            if(strcmp($rule[$i][2], 'lk')) {
+              if($data_training[$j][1] < $kromosomBaru[$ja][2]) {
+                $membershipDegree[$i][1] = 1;
+              } elseif ( ($kromosomBaru[$ja][2] < $data_training[$j][1]) && ($data_training[$j][1] < $kromosomBaru[$ja][3]) ) {
+                $membershipDegree[$i][2] = ($kromosomBaru[$ja][3] - $data_training[$j][1]) / ($kromosomBaru[$ja][3] - $kromosomBaru[$ja][2]);
+              } else {
+                $membershipDegree[$i][2] = 0;
+              }
+            } elseif(strcmp($rule[$i][2], 'pr')) {
+              //rumus membership degree pr
+            } else {
+              $membershipDegree[$i][2] = 9999;
+            }
+
+            if(strcmp($rule[$i][2], 'lk')) {
+              if($data_training[$j][1] ) {
+                $membershipDegree[$i][1] = 1;
+              }  else {
+                $membershipDegree[$i][1] = 9999;
+              }
+            } elseif(strcmp($rule[$i][2], 'pr')) {
+              //rumus membership degree pr
+            } else {
+              $membershipDegree[$i][2] = 9999;
+            }
+
+
+
+      }
+
+
+
+
+
+  }
+
+
+
+
+
+
+
   public function proses_klasifikasi()
   {
     // HARD CODE
@@ -447,91 +722,6 @@ class User extends CI_Controller {
           $certainSumMembershipDegree[$jb][$jba] = 0;
         }
       }
-//         $certainSumMembershipDegree[0][0] =0; //umur muda
-//         $certainSumMembershipDegree[0][1] =0; // umur tua
-//         $certainSumMembershipDegree[0][2] =0; //sex lk
-//         $certainSumMembershipDegree[0][3] =0; //sex pr
-//         $certainSumMembershipDegree[0][4] =0; //td_sistol normal
-//         $certainSumMembershipDegree[0][5] =0; //td_sistol prahipertensi
-//         $certainSumMembershipDegree[0][6] =0; //td_sistol hipertensi
-//         $certainSumMembershipDegree[0][7] =0; //td_distol normal
-//         $certainSumMembershipDegree[0][8] = 0; //td_distol prahipertensi
-//         $certainSumMembershipDegree[0][9] =0; //td_distol hipertensi
-//         $certainSumMembershipDegree[0][10] =0; //lingkar_perut kecil
-//         $certainSumMembershipDegree[0][11] = 0; //lingkar_perut besar
-//         $certainSumMembershipDegree[0][12] = 0; //bmi normal
-//         $certainSumMembershipDegree[0][13] = 0; //bmi ow
-//         $certainSumMembershipDegree[0][14] = 0; //merokok ya
-//         $certainSumMembershipDegree[0][15] = 0; //merokok tidak
-//         $certainSumMembershipDegree[0][16] = 0; //makanan_berlemak sering
-//         $certainSumMembershipDegree[0][17] = 0; //makanan_berlemak jarang
-//         $certainSumMembershipDegree[0][18] = 0; //k_gula >4sdm
-//         $certainSumMembershipDegree[0][19] = 0; //k_gula <=4sdm
-//         $certainSumMembershipDegree[0][20] = 0; //k_garam >1sdt
-//         $certainSumMembershipDegree[0][21] = 0; //k_garam <=1sdt
-//         $certainSumMembershipDegree[0][22] = 0; //olahraga ya
-//         $certainSumMembershipDegree[0][23] = 0; //olahraga tidak
-//         $certainSumMembershipDegree[0][24] = 0; //kafein tdk
-//         $certainSumMembershipDegree[0][25] = 0; //kafein <=3sdt
-//         $certainSumMembershipDegree[0][26] = 0; //kafein >3sdt
-//
-// //sedang
-//         $certainSumMembershipDegree[1][0] =0; //umur muda
-//         $certainSumMembershipDegree[1][1] =0; // umur tua
-//         $certainSumMembershipDegree[1][2] =0; //sex lk
-//         $certainSumMembershipDegree[1][3] =0; //sex pr
-//         $certainSumMembershipDegree[1][4] =0; //td_sistol normal
-//         $certainSumMembershipDegree[1][5] =0; //td_sistol prahipertensi
-//         $certainSumMembershipDegree[1][6] =0; //td_sistol hipertensi
-//         $certainSumMembershipDegree[1][7] =0; //td_distol normal
-//         $certainSumMembershipDegree[1][8] = 0; //td_distol prahipertensi
-//         $certainSumMembershipDegree[1][9] =0; //td_distol hipertensi
-//         $certainSumMembershipDegree[1][10] =0; //lingkar_perut kecil
-//         $certainSumMembershipDegree[1][11] = 0; //lingkar_perut besar
-//         $certainSumMembershipDegree[1][12] = 0; //bmi normal
-//         $certainSumMembershipDegree[1][13] = 0; //bmi ow
-//         $certainSumMembershipDegree[1][14] = 0; //merokok ya
-//         $certainSumMembershipDegree[1][15] = 0; //merokok tidak
-//         $certainSumMembershipDegree[1][16] = 0; //makanan_berlemak sering
-//         $certainSumMembershipDegree[1][17] = 0; //makanan_berlemak jarang
-//         $certainSumMembershipDegree[1][18] = 0; //k_gula >4sdm
-//         $certainSumMembershipDegree[1][19] = 0; //k_gula <=4sdm
-//         $certainSumMembershipDegree[1][20] = 0; //k_garam >1sdt
-//         $certainSumMembershipDegree[1][21] = 0; //k_garam <=1sdt
-//         $certainSumMembershipDegree[1][22] = 0; //olahraga ya
-//         $certainSumMembershipDegree[1][23] = 0; //olahraga tidak
-//         $certainSumMembershipDegree[1][24] = 0; //kafein tdk
-//         $certainSumMembershipDegree[1][25] = 0; //kafein <=3sdt
-//         $certainSumMembershipDegree[1][26] = 0; //kafein >3sdt
-//
-// //tinggi
-//         $certainSumMembershipDegree[2][0] =0; //umur muda
-//         $certainSumMembershipDegree[2][1] =0; // umur tua
-//         $certainSumMembershipDegree[2][2] =0; //sex lk
-//         $certainSumMembershipDegree[2][3] =0; //sex pr
-//         $certainSumMembershipDegree[2][4] =0; //td_sistol normal
-//         $certainSumMembershipDegree[2][5] =0; //td_sistol prahipertensi
-//         $certainSumMembershipDegree[2][6] =0; //td_sistol hipertensi
-//         $certainSumMembershipDegree[2][7] =0; //td_distol normal
-//         $certainSumMembershipDegree[2][8] = 0; //td_distol prahipertensi
-//         $certainSumMembershipDegree[2][9] =0; //td_distol hipertensi
-//         $certainSumMembershipDegree[2][10] =0; //lingkar_perut kecil
-//         $certainSumMembershipDegree[2][11] = 0; //lingkar_perut besar
-//         $certainSumMembershipDegree[2][12] = 0; //bmi normal
-//         $certainSumMembershipDegree[2][13] = 0; //bmi ow
-//         $certainSumMembershipDegree[2][14] = 0; //merokok ya
-//         $certainSumMembershipDegree[2][15] = 0; //merokok tidak
-//         $certainSumMembershipDegree[2][16] = 0; //makanan_berlemak sering
-//         $certainSumMembershipDegree[2][17] = 0; //makanan_berlemak jarang
-//         $certainSumMembershipDegree[2][18] = 0; //k_gula >4sdm
-//         $certainSumMembershipDegree[2][19] = 0; //k_gula <=4sdm
-//         $certainSumMembershipDegree[2][20] = 0; //k_garam >1sdt
-//         $certainSumMembershipDegree[2][21] = 0; //k_garam <=1sdt
-//         $certainSumMembershipDegree[2][22] = 0; //olahraga ya
-//         $certainSumMembershipDegree[2][23] = 0; //olahraga tidak
-//         $certainSumMembershipDegree[2][24] = 0; //kafein tdk
-//         $certainSumMembershipDegree[2][25] = 0; //kafein <=3sdt
-//         $certainSumMembershipDegree[2][26] = 0; //kafein >3sdt
 
       for ($k=0; $k < count($data_training); $k++) {
         if ($data_training[$k][12] == 1) {
