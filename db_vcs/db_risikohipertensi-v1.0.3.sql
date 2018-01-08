@@ -12,6 +12,7 @@
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 
 -- Dumping structure for table db_risikohipertensi.tb_data_training
+DROP TABLE IF EXISTS `tb_data_training`;
 CREATE TABLE IF NOT EXISTS `tb_data_training` (
   `id` int(100) NOT NULL,
   `umur` int(100) NOT NULL,
@@ -116,6 +117,7 @@ INSERT INTO `tb_data_training` (`id`, `umur`, `sex`, `td_sistol`, `td_diastol`, 
 /*!40000 ALTER TABLE `tb_data_training` ENABLE KEYS */;
 
 -- Dumping structure for table db_risikohipertensi.tb_initialthreshold
+DROP TABLE IF EXISTS `tb_initialthreshold`;
 CREATE TABLE IF NOT EXISTS `tb_initialthreshold` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `category` varchar(20) DEFAULT NULL,
@@ -152,6 +154,7 @@ INSERT INTO `tb_initialthreshold` (`id`, `category`, `categoryorder`, `descripti
 /*!40000 ALTER TABLE `tb_initialthreshold` ENABLE KEYS */;
 
 -- Dumping structure for table db_risikohipertensi.tb_rule
+DROP TABLE IF EXISTS `tb_rule`;
 CREATE TABLE IF NOT EXISTS `tb_rule` (
   `id` int(100) NOT NULL AUTO_INCREMENT,
   `umur` varchar(20) DEFAULT NULL,
