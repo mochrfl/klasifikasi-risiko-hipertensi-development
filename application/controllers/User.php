@@ -214,6 +214,9 @@ class User extends CI_Controller {
 
     }
 
+    /**
+     * SEHARUSNYA DISINI SUDAH MULAI LOOPING
+     */
     //NGITUNG SUM
     $sumMembershipDegree = [];
 
@@ -248,11 +251,87 @@ class User extends CI_Controller {
     }
 
 
+    $FCT = 70/100;
+    $LDT = 10/100;
+
+
+    //CARI ENTROPY TOTAL
+    $jmlKelas1 = $jmlKelas2 = $jmlKelas3 = 0;
+    for ($j=0; $j < count($data_training); $j++) {
+      if ($data_training[$j][15] == 1) {
+        $jmlKelas1++;
+      } elseif ($data_training[$j][15] == 2) {
+        $jmlKelas2++;
+      } elseif ($data_training[$j][15] == 3) {
+        $jmlKelas3++;
+      }
+    }
+
+    $log[0] = $jmlKelas1 / count($data_training);
+    $log[1] = $jmlKelas2 / count($data_training);
+    $log[2] = $jmlKelas3 / count($data_training);
+
+    $allEntropy = -(($jmlKelas1 / count($data_training)) * (log($log[0], 2))) -
+                (($jmlKelas2 / count($data_training)) * (log($log[1], 2))) -
+                (($jmlKelas3 / count($data_training)) * (log($log[2], 2)));
+
+    // MENCARI ENTROPY MASING-MASING MEMBERSHIP DEGREE (22 entropy)
+    $entropy = [];
+    $tempLog = 0;
+    for ($f=0; $f < count(current($specificSumMembershipDegree)); $f++) {
+      $x = 0;
+      for ($fa=0; $fa < count($specificSumMembershipDegree); $fa++) {
+
+        ($specificSumMembershipDegree[$fa][$f]/$sumMembershipDegree[$f]) == 0 ? $tempLog = 0 : $tempLog = log(($specificSumMembershipDegree[$fa][$f]/$sumMembershipDegree[$f]),2);
+
+        $x += -(($specificSumMembershipDegree[$fa][$f]/$sumMembershipDegree[$f])*$tempLog);
+      }
+      $entropy[$f] = $x;
+    }
+
+    /**
+     * NOTE:
+     * Entropy atribut dengan 3 batasan ada pada T.Darah, dan KAFEIN
+     * T.Darah indeks ke 2-3-4, Kafein pada indeks ke 19-20-21
+     * IG T. Darah = 1, IG Kafein = 9
+     */
+    //initialize information gain
+    for ($g=0; $g < 10 ; $g++) {
+      $informationGain[$g] = 0;
+    }
+    //set ig tekanan darah
+    for ($g=2; $g < 5 ; $g++) {
+      $informationGain[1] -= (($sumMembershipDegree[$g]/count($data_training))*$entropy[$g]);
+    }
+    //set ig kafein
+    for ($g=19; $g < 22 ; $g++) {
+      $informationGain[9] -= (($sumMembershipDegree[$g]/count($data_training))*$entropy[$g]);
+    }
+    //set other ig
+    $helper = 0;
+    for ($g=0; $g < 10 ; $g++) {
+      if ($informationGain[$g]==0) {
+        for ($ga=0; $ga < 2; $ga++) {
+          $informationGain[$g] -= (($sumMembershipDegree[$helper]/count($data_training))*$entropy[$helper]);
+          $helper++;
+        }
+      } else {
+        $helper +=3;
+      }
+    }
+    for ($g=0; $g < 10 ; $g++) {
+      $informationGain[$g] += $allEntropy;
+    }
+
+    // $pikachu = 5*log(0/24.3,2);
 
     echo '<pre>' . var_export($membershipDegree, true) . '</pre>';
     echo '<pre>' . var_export($sumMembershipDegree, true) . '</pre>';
     echo '<pre>' . var_export($specificSumMembershipDegree, true) . '</pre>';
-    // echo '<pre>' . var_export($sumMembershipDegree, true) . '</pre>';
+    echo '<pre>' . var_export($allEntropy, true) . '</pre>';
+    echo '<pre>' . var_export($entropy, true) . '</pre>';
+    echo '<pre>' . var_export($informationGain, true) . '</pre>';
+    // echo '<pre>' . var_export($pikachu, true) . '</pre>';
 
     // $root = (new Node('root'))
     // ->addChild($child1 = new Node('child1'))
@@ -280,31 +359,6 @@ class User extends CI_Controller {
       //     $total[$je] = 0;
       //   }
       // }
-      //
-      // // cari entropy total
-      // $jmlKelas1 = 0;
-      // $jmlKelas2 = 0;
-      // $jmlKelas3 = 0;
-      //
-      // for ($j=0; $j < count($data_training); $j++) {
-      //   if ($data_training[$j][12] == 1) {
-      //     $jmlKelas1++;
-      //   } elseif ($data_training[$j][12] == 2) {
-      //     $jmlKelas2++;
-      //   } elseif ($data_training[$j][12] == 3) {
-      //     $jmlKelas3++;
-      //   }
-      // }
-      //
-      // $log[0] = $jmlKelas1 / count($data_training);
-      // $log[1] = $jmlKelas2 / count($data_training);
-      // $log[2] = $jmlKelas3 / count($data_training);
-      //
-      // $entropyS = -(($jmlKelas1 / count($data_training)) * (log($log[0], 2))) -
-      //             (($jmlKelas2 / count($data_training)) * (log($log[1], 2))) -
-      //             (($jmlKelas3 / count($data_training)) * (log($log[2], 2)));
-      //
-      // $loop = 0;
       //
       //
       // if($loop == 0) {
