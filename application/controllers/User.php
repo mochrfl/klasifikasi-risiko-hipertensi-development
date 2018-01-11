@@ -525,10 +525,8 @@ class User extends CI_Controller {
       }
     }
 
-
     $FCT = 70/100;
     $LDT = 10/100;
-
 
     //CARI ENTROPY TOTAL
     $jmlKelas1 = $jmlKelas2 = $jmlKelas3 = 0;
@@ -598,6 +596,31 @@ class User extends CI_Controller {
       $informationGain[$g] += $allEntropy;
     }
 
+    //cari information gain terbesar + indeks nya
+    $maxIg =  max($informationGain);
+    $maxIgIndexTemp = array_keys($informationGain, max($informationGain));
+    $maxIgIndex = $maxIgIndexTemp[0];
+
+    if ($maxIgIndex==1 || $maxIgIndex==9) {
+      $maxLoopRoot = 3;
+    } else {
+      $maxLoopRoot = 2;
+    }
+
+    for ($h=0; $h < $maxLoopRoot; $h++) {
+      # code...
+    }
+
+    // $node = $this->buatNode($maxIgIndex);
+    // $this->buatChild($node, 5);
+    $node = new Node();
+    $node->setValue([
+      'attribute' => $attribute,
+      'is_stop' => 0,
+    ]);
+    $cok = new Node('child');
+    $node->addChild($cok);
+
     // $pikachu = 5*log(0/24.3,2);
 
     echo '<pre>' . var_export($membershipDegree, true) . '</pre>';
@@ -606,7 +629,9 @@ class User extends CI_Controller {
     echo '<pre>' . var_export($allEntropy, true) . '</pre>';
     echo '<pre>' . var_export($entropy, true) . '</pre>';
     echo '<pre>' . var_export($informationGain, true) . '</pre>';
-    // echo '<pre>' . var_export($pikachu, true) . '</pre>';
+    echo '<pre>' . var_export($maxIg, true) . '</pre>';
+    echo '<pre>' . var_export($maxIgIndex, true) . '</pre>';
+    echo '<pre>' . var_export($cok->getParent(), true) . '</pre>';
 
     // $root = (new Node('root'))
     // ->addChild($child1 = new Node('child1'))
@@ -617,287 +642,22 @@ class User extends CI_Controller {
 
     // $this->load->view('user/classification_result', array('data_training' => $data_training,
     //                                                       'sum' => $sum));
-
-      // //entropy masing masing atribut
-      // $total = [];
-      // for ($jc=0; $jc < count($certainSumMembershipDegree[0]); $jc++) {
-      //     $x = 0;
-      //     for ($jca=0; $jca < count($certainSumMembershipDegree); $jca++) {
-      //         $x += -(($certainSumMembershipDegree[$jca][$jc]/$sumMembershipDegree[$jc])*log(($certainSumMembershipDegree[$jca][$jc]/$sumMembershipDegree[$jc]),2));
-      //     }
-      //     $total[$jc] =$x;
-      //     // echo "Total atribut " + $total[$i];
-      // }
-      //
-      // for ($je=0; $je < count($total) ; $je++) {
-      //   if(is_nan($total[$je])) {
-      //     $total[$je] = 0;
-      //   }
-      // }
-      //
-      //
-      // if($loop == 0) {
-      //   $root = 99999;
-      //   $childNode = 99999;
-      // }
-      //
-      // $informationGain = array_fill(0, 12, null);
-      //
-      // if($root != $informationGain[0] || $childNode != $informationGain[0] || $loop == 0) {
-      //   $informationGain[0] = $entropyS - (($sumMembershipDegree[0] / count($data_training)) * $total[0]) - (($sumMembershipDegree[1] / count($data_training)) * $total[1]) ;
-      // } if ($root != $informationGain[1] || $childNode != $informationGain[1] || $loop == 0) {
-      //   $informationGain[1] = $entropyS - (($sumMembershipDegree[2] / count($data_training)) * $total[2]) - (($sumMembershipDegree[3] / count($data_training)) * $total[3]) ;
-      // } if ($root != $informationGain[2] || $childNode != $informationGain[2] || $loop == 0) {
-      //   $informationGain[2] = $entropyS - (($sumMembershipDegree[4] / count($data_training)) * $total[4]) - (($sumMembershipDegree[5] / count($data_training)) * $total[5]) - (($sumMembershipDegree[6] / count($data_training)) * $total[6]) ;
-      // } if ($root != $informationGain[3] || $childNode != $informationGain[3] || $loop == 0) {
-      //   $informationGain[3] = $entropyS - (($sumMembershipDegree[7] / count($data_training)) * $total[7]) - (($sumMembershipDegree[8] / count($data_training)) * $total[8]) - (($sumMembershipDegree[9] / count($data_training)) * $total[9]) ;
-      // } if ($root != $informationGain[4] || $childNode != $informationGain[4] || $loop == 0) {
-      //   $informationGain[4] = $entropyS - (($sumMembershipDegree[10] / count($data_training)) * $total[10]) - (($sumMembershipDegree[11] / count($data_training)) * $total[11]) ;
-      // } if ($root != $informationGain[5] || $childNode != $informationGain[5] || $loop == 0) {
-      //   $informationGain[5] = $entropyS - (($sumMembershipDegree[12] / count($data_training)) * $total[12]) - (($sumMembershipDegree[13] / count($data_training)) * $total[13]) ;
-      // } if ($root != $informationGain[6] || $childNode != $informationGain[6] || $loop == 0) {
-      //   $informationGain[6] = $entropyS - (($sumMembershipDegree[14] / count($data_training)) * $total[14]) - (($sumMembershipDegree[15] / count($data_training)) * $total[15]) ;
-      // } if ($root != $informationGain[7] || $childNode != $informationGain[7] || $loop == 0) {
-      //   $informationGain[7] = $entropyS - (($sumMembershipDegree[16] / count($data_training)) * $total[16]) - (($sumMembershipDegree[17] / count($data_training)) * $total[17]) ;
-      // } if ($root != $informationGain[8] || $childNode != $informationGain[8] || $loop == 0) {
-      //   $informationGain[8] = $entropyS - (($sumMembershipDegree[18] / count($data_training)) * $total[18]) - (($sumMembershipDegree[19] / count($data_training)) * $total[19]) ;
-      // } if ($root != $informationGain[9] || $childNode != $informationGain[9] || $loop == 0) {
-      //   $informationGain[9] = $entropyS - (($sumMembershipDegree[20] / count($data_training)) * $total[20]) - (($sumMembershipDegree[21] / count($data_training)) * $total[21]) ;
-      // } if ($root != $informationGain[10] || $childNode != $informationGain[10] || $loop == 0) {
-      //   $informationGain[10] = $entropyS - (($sumMembershipDegree[22] / count($data_training)) * $total[22]) - (($sumMembershipDegree[23] / count($data_training)) * $total[23]) ;
-      // } if ($root != $informationGain[11] || $childNode != $informationGain[11] || $loop == 0) {
-      //   $informationGain[11] = $entropyS - (($sumMembershipDegree[24] / count($data_training)) * $total[24]) - (($sumMembershipDegree[25] / count($data_training)) * $total[25]) - (($sumMembershipDegree[26] / count($data_training)) * $total[26]) ;
-      // }
-      //
-      // for ($i = 0; $i < count($informationGain) ; $i++) {
-      //   $index[$i] = $i;
-      // }
-      //
-      // for ($i = 0; $i < count($informationGain) ; $i++) {
-      //   for ($j = 1; $j < (count($informationGain) - $i); $j++) {
-      //     if($informationGain[$j-1] < $informationGain[$j]){
-      //       $temp = $informationGain[$j-1];
-      //       $informationGain[$j-1] = $informationGain[$j];
-      //       $informationGain[$j] = $temp;
-      //
-      //       $tempIndex = $index[$j-1];
-      //       $index[$j-1] = $index[$j];
-      //       $index[$j] = $tempIndex;
-      //     }
-      //   }
-      // }
-      //
-      // // for ($i = 0; $i < count($informationGain) ; $i++) {
-      // //   if ($i = 0){
-      // //     $root = $informationGain[$i];
-      // //   } else {
-      // //     $childNode[$i] = $informationGain[$i];
-      // //   }
-      // // }
-      //
-      // // if($i == 0) {
-      // //   $root = max($informationGain);
-      // // } else {
-      // //   $childNode[$loop] = max($informationGain);
-      // // }
-      //
-      // $temp = 0;
-      // $proporsi = array_fill(0, 3, array_fill(0, 27, 0));
-      //
-      // for ($jd=0; $jd < count($data_training); $jd++) {
-      //   if ($data_training[$jd][12] == 0) {
-      //     // 0 pertama proporsi kelas ke 0, 0 kedua atributnya
-      //     $proporsi[0][0] = $proporsi[0][0] + $membershipDegree['umur']['muda'][$jd];
-      //     $proporsi[0][1] = $proporsi[0][1] + $membershipDegree['umur']['tua'][$jd];
-      //     $proporsi[0][2] = $proporsi[0][2] + $membershipDegree['sex']['lk'][$jd];
-      //     $proporsi[0][3] = $proporsi[0][3] + $membershipDegree['sex']['pr'][$jd];
-      //     $proporsi[0][4] = $proporsi[0][4] + $membershipDegree['td_sistol']['normal'][$jd];
-      //     $proporsi[0][5] = $proporsi[0][5] + $membershipDegree['td_sistol']['prahipertensi'][$jd];
-      //     $proporsi[0][6] = $proporsi[0][6] + $membershipDegree['td_sistol']['hipertensi'][$jd];
-      //     $proporsi[0][7] = $proporsi[0][7] + $membershipDegree['td_diastol']['normal'][$jd];
-      //     $proporsi[0][8] = $proporsi[0][8] + $membershipDegree['td_diastol']['prahipertensi'][$jd];
-      //     $proporsi[0][9] = $proporsi[0][9] + $membershipDegree['td_diastol']['hipertensi'][$jd];
-      //     $proporsi[0][10] = $proporsi[0][10] + $membershipDegree['lingkar_perut']['kecil'][$jd];
-      //     $proporsi[0][11] = $proporsi[0][11] + $membershipDegree['lingkar_perut']['besar'][$jd];
-      //     $proporsi[0][12] = $proporsi[0][12] + $membershipDegree['bmi']['normal'][$jd];
-      //     $proporsi[0][13] = $proporsi[0][13] + $membershipDegree['bmi']['ow'][$jd];
-      //     $proporsi[0][14] = $proporsi[0][14] + $membershipDegree['merokok']['ya'][$jd];
-      //     $proporsi[0][15] = $proporsi[0][15] + $membershipDegree['merokok']['tdk'][$jd];
-      //     $proporsi[0][16] = $proporsi[0][16] + $membershipDegree['makanan_berlemak']['sering'][$jd];
-      //     $proporsi[0][17] = $proporsi[0][17] + $membershipDegree['makanan_berlemak']['jarang'][$jd];
-      //     $proporsi[0][18] = $proporsi[0][18] + $membershipDegree['k_gula']['>4sdm'][$jd];
-      //     $proporsi[0][19] = $proporsi[0][19] + $membershipDegree['k_gula']['<=4sdm'][$jd];
-      //     $proporsi[0][20] = $proporsi[0][20] + $membershipDegree['k_garam']['>1sdt'][$jd];
-      //     $proporsi[0][21] = $proporsi[0][21] + $membershipDegree['k_garam']['<=1sdt'][$jd];
-      //     $proporsi[0][22] = $proporsi[0][22] + $membershipDegree['olahraga']['ya'][$jd];
-      //     $proporsi[0][23] = $proporsi[0][23] + $membershipDegree['olahraga']['tdk'][$jd];
-      //     $proporsi[0][24] = $proporsi[0][24] + $membershipDegree['k_kafein']['tdk'][$jd];
-      //     $proporsi[0][25] = $proporsi[0][25] + $membershipDegree['k_kafein']['<=3sdt'][$jd];
-      //     $proporsi[0][26] = $proporsi[0][26] + $membershipDegree['k_kafein']['>3sdt'][$jd];
-      //
-      //   } elseif ($data_training[$jd][12] == 1) {
-      //     // 0 pertama proporsi kelas ke 0, 0 kedua atributnya
-      //     $proporsi[1][0] = $proporsi[1][0] + $membershipDegree['umur']['muda'][$jd];
-      //     $proporsi[1][1] = $proporsi[1][1] + $membershipDegree['umur']['tua'][$jd];
-      //     $proporsi[1][2] = $proporsi[1][2] + $membershipDegree['sex']['lk'][$jd];
-      //     $proporsi[1][3] = $proporsi[1][3] + $membershipDegree['sex']['pr'][$jd];
-      //     $proporsi[1][4] = $proporsi[1][4] + $membershipDegree['td_sistol']['normal'][$jd];
-      //     $proporsi[1][5] = $proporsi[1][5] + $membershipDegree['td_sistol']['prahipertensi'][$jd];
-      //     $proporsi[1][6] = $proporsi[1][6] + $membershipDegree['td_sistol']['hipertensi'][$jd];
-      //     $proporsi[1][7] = $proporsi[1][7] + $membershipDegree['td_diastol']['normal'][$jd];
-      //     $proporsi[1][8] = $proporsi[1][8] + $membershipDegree['td_diastol']['prahipertensi'][$jd];
-      //     $proporsi[1][9] = $proporsi[1][9] + $membershipDegree['td_diastol']['hipertensi'][$jd];
-      //     $proporsi[1][10] = $proporsi[1][10] + $membershipDegree['lingkar_perut']['kecil'][$jd];
-      //     $proporsi[1][11] = $proporsi[1][11] + $membershipDegree['lingkar_perut']['besar'][$jd];
-      //     $proporsi[1][12] = $proporsi[1][12] + $membershipDegree['bmi']['normal'][$jd];
-      //     $proporsi[1][13] = $proporsi[1][13] + $membershipDegree['bmi']['ow'][$jd];
-      //     $proporsi[1][14] = $proporsi[1][14] + $membershipDegree['merokok']['ya'][$jd];
-      //     $proporsi[1][15] = $proporsi[1][15] + $membershipDegree['merokok']['tdk'][$jd];
-      //     $proporsi[1][16] = $proporsi[1][16] + $membershipDegree['makanan_berlemak']['sering'][$jd];
-      //     $proporsi[1][17] = $proporsi[1][17] + $membershipDegree['makanan_berlemak']['jarang'][$jd];
-      //     $proporsi[1][18] = $proporsi[1][18] + $membershipDegree['k_gula']['>4sdm'][$jd];
-      //     $proporsi[1][19] = $proporsi[1][19] + $membershipDegree['k_gula']['<=4sdm'][$jd];
-      //     $proporsi[1][20] = $proporsi[1][20] + $membershipDegree['k_garam']['>1sdt'][$jd];
-      //     $proporsi[1][21] = $proporsi[1][21] + $membershipDegree['k_garam']['<=1sdt'][$jd];
-      //     $proporsi[1][22] = $proporsi[1][22] + $membershipDegree['olahraga']['ya'][$jd];
-      //     $proporsi[1][23] = $proporsi[1][23] + $membershipDegree['olahraga']['tdk'][$jd];
-      //     $proporsi[1][24] = $proporsi[1][24] + $membershipDegree['k_kafein']['tdk'][$jd];
-      //     $proporsi[1][25] = $proporsi[1][25] + $membershipDegree['k_kafein']['<=3sdt'][$jd];
-      //     $proporsi[1][26] = $proporsi[1][26] + $membershipDegree['k_kafein']['>3sdt'][$jd];
-      //   } elseif ($data_training[$jd][12] == 2) {
-      //     // 0 pertama proporsi kelas ke 0, 0 kedua atributnya
-      //     $proporsi[2][0] = $proporsi[2][0] + $membershipDegree['umur']['muda'][$jd];
-      //     $proporsi[2][1] = $proporsi[2][1] + $membershipDegree['umur']['tua'][$jd];
-      //     $proporsi[2][2] = $proporsi[2][2] + $membershipDegree['sex']['lk'][$jd];
-      //     $proporsi[2][3] = $proporsi[2][3] + $membershipDegree['sex']['pr'][$jd];
-      //     $proporsi[2][4] = $proporsi[2][4] + $membershipDegree['td_sistol']['normal'][$jd];
-      //     $proporsi[2][5] = $proporsi[2][5] + $membershipDegree['td_sistol']['prahipertensi'][$jd];
-      //     $proporsi[2][6] = $proporsi[2][6] + $membershipDegree['td_sistol']['hipertensi'][$jd];
-      //     $proporsi[2][7] = $proporsi[2][7] + $membershipDegree['td_diastol']['normal'][$jd];
-      //     $proporsi[2][8] = $proporsi[2][8] + $membershipDegree['td_diastol']['prahipertensi'][$jd];
-      //     $proporsi[2][9] = $proporsi[2][9] + $membershipDegree['td_diastol']['hipertensi'][$jd];
-      //     $proporsi[2][10] = $proporsi[2][10] + $membershipDegree['lingkar_perut']['kecil'][$jd];
-      //     $proporsi[2][11] = $proporsi[2][11] + $membershipDegree['lingkar_perut']['besar'][$jd];
-      //     $proporsi[2][12] = $proporsi[2][12] + $membershipDegree['bmi']['normal'][$jd];
-      //     $proporsi[2][13] = $proporsi[2][13] + $membershipDegree['bmi']['ow'][$jd];
-      //     $proporsi[2][14] = $proporsi[2][14] + $membershipDegree['merokok']['ya'][$jd];
-      //     $proporsi[2][15] = $proporsi[2][15] + $membershipDegree['merokok']['tdk'][$jd];
-      //     $proporsi[2][16] = $proporsi[2][16] + $membershipDegree['makanan_berlemak']['sering'][$jd];
-      //     $proporsi[2][17] = $proporsi[2][17] + $membershipDegree['makanan_berlemak']['jarang'][$jd];
-      //     $proporsi[2][18] = $proporsi[2][18] + $membershipDegree['k_gula']['>4sdm'][$jd];
-      //     $proporsi[2][19] = $proporsi[2][19] + $membershipDegree['k_gula']['<=4sdm'][$jd];
-      //     $proporsi[2][20] = $proporsi[2][20] + $membershipDegree['k_garam']['>1sdt'][$jd];
-      //     $proporsi[2][21] = $proporsi[2][21] + $membershipDegree['k_garam']['<=1sdt'][$jd];
-      //     $proporsi[2][22] = $proporsi[2][22] + $membershipDegree['olahraga']['ya'][$jd];
-      //     $proporsi[2][23] = $proporsi[2][23] + $membershipDegree['olahraga']['tdk'][$jd];
-      //     $proporsi[2][24] = $proporsi[2][24] + $membershipDegree['k_kafein']['tdk'][$jd];
-      //     $proporsi[2][25] = $proporsi[2][25] + $membershipDegree['k_kafein']['<=3sdt'][$jd];
-      //     $proporsi[2][26] = $proporsi[2][26] + $membershipDegree['k_kafein']['>3sdt'][$jd];
-      //   }
-      // }
-      //
-      // // for ($jf=0; $jf < count($proporsi); $jf++) {
-      //   $proporsiFinal[0][0] = ($proporsi[0][0] / ($proporsi[0][0] + $proporsi[1][0] + $proporsi[2][0])) * 100;
-      //   $proporsiFinal[0][1] = ($proporsi[0][1] / ($proporsi[0][1] + $proporsi[1][1] + $proporsi[2][1])) * 100;
-      //   $proporsiFinal[0][2] = ($proporsi[0][2] / ($proporsi[0][2] + $proporsi[1][2] + $proporsi[2][2])) * 100;
-      //   $proporsiFinal[0][3] = ($proporsi[0][3] / ($proporsi[0][3] + $proporsi[1][3] + $proporsi[2][3])) * 100;
-      //   $proporsiFinal[0][4] = ($proporsi[0][4] / ($proporsi[0][4] + $proporsi[1][4] + $proporsi[2][4])) * 100;
-      //   $proporsiFinal[0][5] = ($proporsi[0][5] / ($proporsi[0][5] + $proporsi[1][5] + $proporsi[2][5])) * 100;
-      //   $proporsiFinal[0][6] = ($proporsi[0][6] / ($proporsi[0][6] + $proporsi[1][6] + $proporsi[2][6])) * 100;
-      //   $proporsiFinal[0][7] = ($proporsi[0][7] / ($proporsi[0][7] + $proporsi[1][7] + $proporsi[2][7])) * 100;
-      //   $proporsiFinal[0][8] = ($proporsi[0][8] / ($proporsi[0][8] + $proporsi[1][8] + $proporsi[2][8])) * 100;
-      //   $proporsiFinal[0][9] = ($proporsi[0][9] / ($proporsi[0][9] + $proporsi[1][9] + $proporsi[2][9])) * 100;
-      //   $proporsiFinal[0][10] = ($proporsi[0][10] / ($proporsi[0][10] + $proporsi[1][10] + $proporsi[2][10])) * 100;
-      //   $proporsiFinal[0][11] = ($proporsi[0][11] / ($proporsi[0][11] + $proporsi[1][11] + $proporsi[2][11])) * 100;
-      //   $proporsiFinal[0][12] = ($proporsi[0][12] / ($proporsi[0][12] + $proporsi[1][12] + $proporsi[2][12])) * 100;
-      //   $proporsiFinal[0][13] = ($proporsi[0][13] / ($proporsi[0][13] + $proporsi[1][13] + $proporsi[2][13])) * 100;
-      //   $proporsiFinal[0][14] = ($proporsi[0][14] / ($proporsi[0][14] + $proporsi[1][14] + $proporsi[2][14])) * 100;
-      //   $proporsiFinal[0][15] = ($proporsi[0][15] / ($proporsi[0][15] + $proporsi[1][15] + $proporsi[2][15])) * 100;
-      //   $proporsiFinal[0][16] = ($proporsi[0][16] / ($proporsi[0][16] + $proporsi[1][16] + $proporsi[2][16])) * 100;
-      //   $proporsiFinal[0][17] = ($proporsi[0][17] / ($proporsi[0][17] + $proporsi[1][17] + $proporsi[2][17])) * 100;
-      //   $proporsiFinal[0][18] = ($proporsi[0][18] / ($proporsi[0][18] + $proporsi[1][18] + $proporsi[2][18])) * 100;
-      //   $proporsiFinal[0][19] = ($proporsi[0][19] / ($proporsi[0][19] + $proporsi[1][19] + $proporsi[2][19])) * 100;
-      //   $proporsiFinal[0][20] = ($proporsi[0][20] / ($proporsi[0][20] + $proporsi[1][20] + $proporsi[2][20])) * 100;
-      //   $proporsiFinal[0][21] = ($proporsi[0][21] / ($proporsi[0][21] + $proporsi[1][21] + $proporsi[2][21])) * 100;
-      //   $proporsiFinal[0][22] = ($proporsi[0][22] / ($proporsi[0][22] + $proporsi[1][22] + $proporsi[2][22])) * 100;
-      //   $proporsiFinal[0][23] = ($proporsi[0][23] / ($proporsi[0][23] + $proporsi[1][23] + $proporsi[2][23])) * 100;
-      //   $proporsiFinal[0][24] = ($proporsi[0][24] / ($proporsi[0][24] + $proporsi[1][24] + $proporsi[2][24])) * 100;
-      //   $proporsiFinal[0][25] = ($proporsi[0][25] / ($proporsi[0][25] + $proporsi[1][25] + $proporsi[2][25])) * 100;
-      //   $proporsiFinal[0][26] = ($proporsi[0][26] / ($proporsi[0][26] + $proporsi[1][26] + $proporsi[2][26])) * 100;
-      //
-      //
-      //   $proporsiFinal[1][0] = ($proporsi[1][0] / ($proporsi[0][0] + $proporsi[1][0] + $proporsi[2][0])) * 100;
-      //   $proporsiFinal[1][1] = ($proporsi[1][1] / ($proporsi[0][1] + $proporsi[1][1] + $proporsi[2][1])) * 100;
-      //   $proporsiFinal[1][2] = ($proporsi[1][2] / ($proporsi[0][2] + $proporsi[1][2] + $proporsi[2][2])) * 100;
-      //   $proporsiFinal[1][3] = ($proporsi[1][3] / ($proporsi[0][3] + $proporsi[1][3] + $proporsi[2][3])) * 100;
-      //   $proporsiFinal[1][4] = ($proporsi[1][4] / ($proporsi[0][4] + $proporsi[1][4] + $proporsi[2][4])) * 100;
-      //   $proporsiFinal[1][5] = ($proporsi[1][5] / ($proporsi[0][5] + $proporsi[1][5] + $proporsi[2][5])) * 100;
-      //   $proporsiFinal[1][6] = ($proporsi[1][6] / ($proporsi[0][6] + $proporsi[1][6] + $proporsi[2][6])) * 100;
-      //   $proporsiFinal[1][7] = ($proporsi[1][7] / ($proporsi[0][7] + $proporsi[1][7] + $proporsi[2][7])) * 100;
-      //   $proporsiFinal[1][8] = ($proporsi[1][8] / ($proporsi[0][8] + $proporsi[1][8] + $proporsi[2][8])) * 100;
-      //   $proporsiFinal[1][9] = ($proporsi[1][9] / ($proporsi[0][9] + $proporsi[1][9] + $proporsi[2][9])) * 100;
-      //   $proporsiFinal[1][10] = ($proporsi[1][10] / ($proporsi[0][10] + $proporsi[1][10] + $proporsi[2][10])) * 100;
-      //   $proporsiFinal[1][11] = ($proporsi[1][11] / ($proporsi[0][11] + $proporsi[1][11] + $proporsi[2][11])) * 100;
-      //   $proporsiFinal[1][12] = ($proporsi[1][12] / ($proporsi[0][12] + $proporsi[1][12] + $proporsi[2][12])) * 100;
-      //   $proporsiFinal[1][13] = ($proporsi[1][13] / ($proporsi[0][13] + $proporsi[1][13] + $proporsi[2][13])) * 100;
-      //   $proporsiFinal[1][14] = ($proporsi[1][14] / ($proporsi[0][14] + $proporsi[1][14] + $proporsi[2][14])) * 100;
-      //   $proporsiFinal[1][15] = ($proporsi[1][15] / ($proporsi[0][15] + $proporsi[1][15] + $proporsi[2][15])) * 100;
-      //   $proporsiFinal[1][16] = ($proporsi[1][16] / ($proporsi[0][16] + $proporsi[1][16] + $proporsi[2][16])) * 100;
-      //   $proporsiFinal[1][17] = ($proporsi[1][17] / ($proporsi[0][17] + $proporsi[1][17] + $proporsi[2][17])) * 100;
-      //   $proporsiFinal[1][18] = ($proporsi[1][18] / ($proporsi[0][18] + $proporsi[1][18] + $proporsi[2][18])) * 100;
-      //   $proporsiFinal[1][19] = ($proporsi[1][19] / ($proporsi[0][19] + $proporsi[1][19] + $proporsi[2][19])) * 100;
-      //   $proporsiFinal[1][20] = ($proporsi[1][20] / ($proporsi[0][20] + $proporsi[1][20] + $proporsi[2][20])) * 100;
-      //   $proporsiFinal[1][21] = ($proporsi[1][21] / ($proporsi[0][21] + $proporsi[1][21] + $proporsi[2][21])) * 100;
-      //   $proporsiFinal[1][22] = ($proporsi[1][22] / ($proporsi[0][22] + $proporsi[1][22] + $proporsi[2][22])) * 100;
-      //   $proporsiFinal[1][23] = ($proporsi[1][23] / ($proporsi[0][23] + $proporsi[1][23] + $proporsi[2][23])) * 100;
-      //   $proporsiFinal[1][24] = ($proporsi[1][24] / ($proporsi[0][24] + $proporsi[1][24] + $proporsi[2][24])) * 100;
-      //   $proporsiFinal[1][25] = ($proporsi[1][25] / ($proporsi[0][25] + $proporsi[1][25] + $proporsi[2][25])) * 100;
-      //   $proporsiFinal[1][26] = ($proporsi[1][26] / ($proporsi[0][26] + $proporsi[1][26] + $proporsi[2][26])) * 100;
-      //
-      //   $proporsiFinal[2][0] = ($proporsi[2][0] / ($proporsi[0][0] + $proporsi[1][0] + $proporsi[2][0])) * 100;
-      //   $proporsiFinal[2][1] = ($proporsi[2][1] / ($proporsi[0][1] + $proporsi[1][1] + $proporsi[2][1])) * 100;
-      //   $proporsiFinal[2][2] = ($proporsi[2][2] / ($proporsi[0][2] + $proporsi[1][2] + $proporsi[2][2])) * 100;
-      //   $proporsiFinal[2][3] = ($proporsi[2][3] / ($proporsi[0][3] + $proporsi[1][3] + $proporsi[2][3])) * 100;
-      //   $proporsiFinal[2][4] = ($proporsi[2][4] / ($proporsi[0][4] + $proporsi[1][4] + $proporsi[2][4])) * 100;
-      //   $proporsiFinal[2][5] = ($proporsi[2][5] / ($proporsi[0][5] + $proporsi[1][5] + $proporsi[2][5])) * 100;
-      //   $proporsiFinal[2][6] = ($proporsi[2][6] / ($proporsi[0][6] + $proporsi[1][6] + $proporsi[2][6])) * 100;
-      //   $proporsiFinal[2][7] = ($proporsi[2][7] / ($proporsi[0][7] + $proporsi[1][7] + $proporsi[2][7])) * 100;
-      //   $proporsiFinal[2][8] = ($proporsi[2][8] / ($proporsi[0][8] + $proporsi[1][8] + $proporsi[2][8])) * 100;
-      //   $proporsiFinal[2][9] = ($proporsi[2][9] / ($proporsi[0][9] + $proporsi[1][9] + $proporsi[2][9])) * 100;
-      //   $proporsiFinal[2][10] = ($proporsi[2][10] / ($proporsi[0][10] + $proporsi[1][10] + $proporsi[2][10])) * 100;
-      //   $proporsiFinal[2][11] = ($proporsi[2][11] / ($proporsi[0][11] + $proporsi[1][11] + $proporsi[2][11])) * 100;
-      //   $proporsiFinal[2][12] = ($proporsi[2][12] / ($proporsi[0][12] + $proporsi[1][12] + $proporsi[2][12])) * 100;
-      //   $proporsiFinal[2][13] = ($proporsi[2][13] / ($proporsi[0][13] + $proporsi[1][13] + $proporsi[2][13])) * 100;
-      //   $proporsiFinal[2][14] = ($proporsi[2][14] / ($proporsi[0][14] + $proporsi[1][14] + $proporsi[2][14])) * 100;
-      //   $proporsiFinal[2][15] = ($proporsi[2][15] / ($proporsi[0][15] + $proporsi[1][15] + $proporsi[2][15])) * 100;
-      //   $proporsiFinal[2][16] = ($proporsi[2][16] / ($proporsi[0][16] + $proporsi[1][16] + $proporsi[2][16])) * 100;
-      //   $proporsiFinal[2][17] = ($proporsi[2][17] / ($proporsi[0][17] + $proporsi[1][17] + $proporsi[2][17])) * 100;
-      //   $proporsiFinal[2][18] = ($proporsi[2][18] / ($proporsi[0][18] + $proporsi[1][18] + $proporsi[2][18])) * 100;
-      //   $proporsiFinal[2][19] = ($proporsi[2][19] / ($proporsi[0][19] + $proporsi[1][19] + $proporsi[2][19])) * 100;
-      //   $proporsiFinal[2][20] = ($proporsi[2][20] / ($proporsi[0][20] + $proporsi[1][20] + $proporsi[2][20])) * 100;
-      //   $proporsiFinal[2][21] = ($proporsi[2][21] / ($proporsi[0][21] + $proporsi[1][21] + $proporsi[2][21])) * 100;
-      //   $proporsiFinal[2][22] = ($proporsi[2][22] / ($proporsi[0][22] + $proporsi[1][22] + $proporsi[2][22])) * 100;
-      //   $proporsiFinal[2][23] = ($proporsi[2][23] / ($proporsi[0][23] + $proporsi[1][23] + $proporsi[2][23])) * 100;
-      //   $proporsiFinal[2][24] = ($proporsi[2][24] / ($proporsi[0][24] + $proporsi[1][24] + $proporsi[2][24])) * 100;
-      //   $proporsiFinal[2][25] = ($proporsi[2][25] / ($proporsi[0][25] + $proporsi[1][25] + $proporsi[2][25])) * 100;
-      //   $proporsiFinal[2][26] = ($proporsi[2][26] / ($proporsi[0][26] + $proporsi[1][26] + $proporsi[2][26])) * 100;
-      // }
-
-
-
-
-
-		}
   }
 
-  // function createTree($list, $parent){
-  //   $tree = array();
-  //   foreach ($parent as $k=>$l){
-  //       if(isset($list[$l['id']])){
-  //           $l['children'] = createTree($list, $list[$l['id']]);
-  //       }
-  //       $tree[] = $l;
-  //   }
-  //   return $tree;
-  // }
+  public function buatNode($attribute)
+  {
+    $node = new Node();
+    $node->setValue([
+      'attribute' => $attribute,
+      'is_stop' => 0,
+    ]);
+    return $node;
+  }
+
+  public function buatChild($node, $attribute)
+  {
+    $node->addChild($this->buatNode($attribute));
+    return $node;
+  }
+}
 ?>
