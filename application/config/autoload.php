@@ -132,4 +132,4 @@ $autoload['language'] = array();
 |
 |	$autoload['model'] = array('first_model' => 'first');
 */
-$autoload['model'] = array('data_model');
+$autoload['model'] = array('data_model', 'initialthreshold_model');
