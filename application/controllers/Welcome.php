@@ -25,7 +25,8 @@ class Welcome extends CI_Controller
 
 		$data_fuzzys = $fuzzy->arrayFuzzy();
 		$tree = $fuzzy->printTree();
+		$array_tree = json_encode($fuzzy->arrayTree());
 
-		$this->load->view('welcome_message', compact("data_fuzzys", "tree"));
+		$this->load->view('welcome_message', compact("data_fuzzys", "tree", "array_tree"));
 	}
 }

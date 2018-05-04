@@ -15,6 +15,7 @@ class Fuzzification
 	public $iG = [];
 	public $entrophy = [];
 	public $globalEntrophy;
+	public $chosenRule;
 	public $highestIGFrom;
 
 	public $hasData = false;
@@ -105,14 +106,8 @@ class Fuzzification
 					}
 				}
 
-				$this->fuzzification[$no] = $fuzzi;
+				$this->fuzzification[$rule["name"]] = $fuzzi;
 			}
-
-			$this->countEntrophy();
-
-			$this->countIG();
-
-			$this->isFuzzificated = true;
 		}
 	}
 
@@ -192,48 +187,48 @@ class Fuzzification
 				$this->highestIGFrom = $no;
 			}
 		}
+
+		$this->chosenRule = $this->rules[$this->highestIGFrom]["name"];
 	}
 
 	function extractTree()
 	{
-		if ($this->isFuzzificated) {
-			$this->children = [];
+		$this->children = [];
 
-			$this->pernode = [];
-			$this->pernodePercentage = [];
+		$this->pernode = [];
+		$this->pernodePercentage = [];
 
-			for ($i = 0; $i < count($this->rules[$this->highestIGFrom]["types"]); $i++) {
-				$childData = array_filter($this->data, function ($datum) use ($i) {
-					return $this->fuzzification[$this->highestIGFrom][$datum["id"] - 1][$i] > 0;
-				});
+		for ($i = 0; $i < count($this->rules[$this->highestIGFrom]["types"]); $i++) {
+			$childData = array_filter($this->data, function ($datum) use ($i) {
+				return $this->fuzzification[$this->chosenRule][$datum["id"] - 1][$i] > 0;
+			});
 
-				$childRules = $this->rules;
-				unset($childRules[$this->highestIGFrom]);
-				$childRules = array_values($childRules);
+			$childRules = $this->rules;
+			unset($childRules[$this->highestIGFrom]);
+			$childRules = array_values($childRules);
 
-				$name = $this->rules[$this->highestIGFrom]["name"] . " - " . $this->rules[$this->highestIGFrom]["types"][$i];
-				$this->children[] = new Fuzzification($childData, $childRules, $name);
+			$name = $this->chosenRule . " - " . $this->rules[$this->highestIGFrom]["types"][$i];
+			$this->children[] = new Fuzzification($childData, $childRules, $name);
 
-				$sum = 0;
-				for ($j = 0; $j < count($this->risk); $j++) {
-					$this->pernode[$j][$i] = 0;
-					foreach ($childData as $datum) {
-						if ($datum["risiko_hipertensi"] == $j + 1)
-							$this->pernode[$j][$i] += $this->fuzzification[$this->highestIGFrom][$datum["id"] - 1][$i];
-					}
-					$sum += $this->pernode[$j][$i];
+			$sum = 0;
+			for ($j = 0; $j < count($this->risk); $j++) {
+				$this->pernode[$j][$i] = 0;
+				foreach ($childData as $datum) {
+					if ($datum["risiko_hipertensi"] == $j + 1)
+						$this->pernode[$j][$i] += $this->fuzzification[$this->chosenRule][$datum["id"] - 1][$i];
 				}
-				for ($j = 0; $j < count($this->risk); $j++) {
-					$this->pernodePercentage[$j][$i] = $this->pernode[$j][$i] / $sum * 100;
+				$sum += $this->pernode[$j][$i];
+			}
+			for ($j = 0; $j < count($this->risk); $j++) {
+				$this->pernodePercentage[$j][$i] = $this->pernode[$j][$i] / $sum * 100;
 
-					if ($this->pernodePercentage[$j][$i] >= 70) {
-						$this->children[$i]->setResult($this->risk[$j]);
-					}
+				if ($this->pernodePercentage[$j][$i] >= 70) {
+					$this->children[$i]->setResult($this->risk[$j]);
 				}
+			}
 
-				if (!$this->children[$i]->result) {
-					$this->children[$i]->start();
-				}
+			if (!$this->children[$i]->result) {
+				$this->children[$i]->start();
 			}
 		}
 	}
@@ -273,6 +268,26 @@ class Fuzzification
 		}
 
 		return $str;
+	}
+
+	function arrayTree()
+	{
+		if ($this->chosenRule)
+			$arr = [
+				"name" => $this->chosenRule,
+				"result" => $this->result
+			];
+		else
+			return ["result" => $this->result];
+
+		if ($this->children != null) {
+			$arr["children"] = [];
+			foreach ($this->children as $child) {
+				$arr["children"][] = $child->arrayTree();
+			}
+		}
+
+		return $arr;
 	}
 
 	function arrayFuzzy()
