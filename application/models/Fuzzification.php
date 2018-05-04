@@ -20,7 +20,7 @@ class Fuzzification
 
 	public $hasData = false;
 	public $hasRules = false;
-	public $isFuzzificated = false;
+	public $isTesting = false;
 
 	public $pernode;
 	public $pernodePercentage;
@@ -28,10 +28,11 @@ class Fuzzification
 	public $result = false;
 	public $children = null;
 
-	public function __construct($data, $rules, $name = false)
+	public function __construct($data, $rules, $name = false, $test = false)
 	{
 		$this->setData($data);
 		$this->setRules($rules);
+		$this->isTesting = $test;
 
 		if ($name) {
 			$this->name = $name;
@@ -47,7 +48,11 @@ class Fuzzification
 	{
 		if ($this->totalData) {
 			$this->fuzzification();
-			$this->extractTree();
+			if (!$this->isTesting) {
+				$this->countEntrophy();
+				$this->countIG();
+				$this->extractTree();
+			}
 		}
 	}
 

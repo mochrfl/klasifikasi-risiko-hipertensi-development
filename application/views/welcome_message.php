@@ -48,6 +48,38 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			</div>
 		</div>
 	</div>
+	<div class="bs-docs-section">
+		<div class="row">
+			<div class="col-lg-12">
+				<div class="page-header">
+					<h1 id="tree">Hasil Pengujian</h1>
+				</div>
+
+				<div class="bs-component">
+					<table class="table table-hover">
+						<thead>
+						<tr>
+							<th scope="col">No</th>
+							<?php foreach (end($data_fuzzys)->risk as $item) { ?>
+								<th scope="col"><?= $item ?></th>
+							<?php } ?>
+						</tr>
+						</thead>
+						<tbody>
+						<?php foreach ($pengujian as $key => $datum) { ?>
+							<tr>
+								<th scope="col"><?= $key + 1 ?></th>
+								<?php foreach ($datum as $item) { ?>
+									<th scope="col"><?= $item ?></th>
+								<?php } ?>
+							</tr>
+						<?php } ?>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
 </div>
 <hr>
 
@@ -315,7 +347,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			</div>
 		</div>
 	</div>
-</div>
+	</div>
 <?php } ?>
 
 <p class="footer">Page rendered in <strong>{elapsed_time}</strong>

@@ -106,9 +106,72 @@ class Data_model extends CI_model
 	{
 		// todo: INI DUMMY, UBAH AMBIL DARI DB YA!
 
-		$get_from_db = `{"name":"sum_td","children":[{"name":"olahraga","children":[{"result":"Sedang"},{"result":"Rendah"}]},{"name":"k_kafein","children":[{"name":"olahraga","children":[{"name":"makanan_berlemak","children":[{"result":"Sedang"},{"name":"umur","children":[{"result":"Sedang"},{"result":"Tinggi"}]}]},{"result":"Rendah"}]},{"name":"umur","children":[{"name":"k_gula","children":[{"result":"Rendah"},{"result":"Sedang"}]},{"name":"merokok","children":[{"name":"k_gula","children":[{"name":"makanan_berlemak","children":[{"name":"lingkar_perut","children":[{"result":"Sedang"},{"result":"Tinggi"}]},{"result":"Tinggi"}]},{"result":"Sedang"}]},{"result":"Sedang"}]}]},{"result":"Tinggi"}]},{"result":"Tinggi"}]}`;
+		$get_from_db = '{"name":"sum_td","result":false,"children":[{"name":"olahraga","result":false,"children":[{"result":"Sedang"},{"result":"Rendah"}]},{"name":"k_kafein","result":false,"children":[{"name":"olahraga","result":false,"children":[{"name":"makanan_berlemak","result":false,"children":[{"result":"Sedang"},{"name":"umur","result":false,"children":[{"result":"Sedang"},{"result":"Tinggi"}]}]},{"result":"Rendah"}]},{"name":"umur","result":false,"children":[{"name":"k_gula","result":false,"children":[{"result":"Rendah"},{"result":"Sedang"}]},{"name":"merokok","result":false,"children":[{"name":"k_gula","result":false,"children":[{"name":"makanan_berlemak","result":false,"children":[{"name":"lingkar_perut","result":false,"children":[{"result":"Sedang"},{"result":"Tinggi"}]},{"result":"Tinggi"}]},{"result":"Sedang"}]},{"result":"Sedang"}]}]},{"result":"Tinggi"}]},{"result":"Tinggi"}]}';
 
 		return json_decode($get_from_db);
+	}
+
+	public function pengujian()
+	{
+		$data = $this->get_all_data_testing();
+
+		$rules = $this->get_all_rule();
+
+		$fuzzy = new Fuzzification($data, $rules, false, true);
+
+		$transpose = array();
+		foreach ($fuzzy->fuzzification as $key => $a) {
+			foreach ($a as $k => $v) {
+				$transpose[$k][$key] = $v;
+			}
+		}
+
+		$simple_tree = $this->get_formed_tree();
+
+		print_r($simple_tree);
+		$results = [];
+
+		foreach ($transpose as $item) {
+//			print_r($item);
+//			echo "<br>";
+			$results[] = $this->single_pengujian($item, $simple_tree);
+		}
+
+		return $results;
+	}
+
+	private function single_pengujian($data_fuzzy, $node)
+	{
+		if ($node->result) {
+			echo "halo";
+			switch ($node->result) {
+				case "Rendah":
+					return [1, 0, 0];
+				case "Sedang":
+					return [0, 1, 0];
+				case "Tinggi":
+					return [0, 0, 1];
+			}
+		}
+
+		$result = [0, 0, 0];
+		if (!isset($data_fuzzy[$node->name]))
+			print_r($node->name);
+		else {
+			$data = $data_fuzzy[$node->name];
+
+
+			foreach ($data as $key => $datum) {
+				if ($datum > 0) {
+					$ch_val = $this->single_pengujian($data_fuzzy, $node->children[$key]);
+					foreach ($result as $k => $r) {
+						$result[$k] += $datum * $ch_val[$k];
+					}
+				}
+			}
+
+		}
+		return $result;
 	}
 
 	public function get_fuzzy()
