@@ -232,24 +232,7 @@ class Fuzzification
 				}
 
 				if (!$this->children[$i]->result) {
-//					echo "<br>" . $this->rules[$this->highestIGFrom]["name"] . " child no $i <br>";
-//					print_r($this->entrophy);
-//					echo "<br>";
-//					print_r($this->riskCount);
-//					echo "<br>";
-//					print_r($this->totalData);
-//					echo "<br>";
-//					print_r($this->sum);
-//					echo "<br>";
-//					print_r($this->globalEntrophy);
-//					echo "<br>";
 					$this->children[$i]->start();
-//				} else {
-//					echo "<br>" . $this->rules[$this->highestIGFrom]["name"] . " child no $i <br>";
-//					print_r($this->result);
-//					echo "<br>";
-//					print_r($this->pernodePercentage);
-//					echo "<br>";
 				}
 			}
 		}
@@ -262,11 +245,19 @@ class Fuzzification
 
 	function getResult()
 	{
+		$name = $this->prependName();
+		$name = "<a href='#$name'>$this->name</a>";
+
 		if (!$this->result) {
-			return "[$this->name]";
+			return "[$name]";
 		}
 
-		return "[$this->name => $this->result]|";
+		return "[$name => $this->result]|";
+	}
+
+	function prependName()
+	{
+		return str_replace(" ", "-", $this->name);
 	}
 
 	function printTree()
@@ -282,5 +273,18 @@ class Fuzzification
 		}
 
 		return $str;
+	}
+
+	function arrayFuzzy()
+	{
+		$fuzzy_data = [$this];
+
+		if ($this->children != null) {
+			foreach ($this->children as $child) {
+				$fuzzy_data = array_merge($fuzzy_data, $child->arrayFuzzy());
+			}
+		}
+
+		return $fuzzy_data;
 	}
 }

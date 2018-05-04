@@ -34,86 +34,39 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		<div class="row">
 			<div class="col-lg-12">
 				<div class="page-header">
-					<h1 id="tables">Data</h1>
+					<h1 id="tree">Tree</h1>
 				</div>
 
 				<div class="bs-component">
-					<table class="table table-hover">
-						<thead>
-						<tr>
-							<?php foreach ($data[0] as $key => $item) { ?>
-								<th scope="col"><?= $key ?></th>
-							<?php } ?>
-						</tr>
-						</thead>
-						<tbody>
-						<?php foreach ($data as $datum) { ?>
-							<tr>
-								<?php foreach ($datum as $key => $item) { ?>
-									<th scope="col"><?= $item ?></th>
-								<?php } ?>
-							</tr>
-						<?php } ?>
-						</tbody>
-					</table>
+					<?= $tree ?>
 				</div>
 			</div>
 		</div>
 	</div>
 
-	<div class="bs-docs-section">
-		<div class="row">
-			<div class="col-lg-12">
-				<div class="page-header">
-					<h1 id="tables">Rules</h1>
-				</div>
+	<?php foreach ($data_fuzzys as $fuzzy) { ?>
+		<div class="container" id="<?= $fuzzy->prependName() ?>">
 
-				<div class="bs-component">
-					<table class="table table-hover">
-						<tbody>
-						<?php foreach ($rules as $item) { ?>
-							<tr>
-								<th scope="col" rowspan="2"><?= $item["name"] ?></th>
-								<?php foreach ($item["types"] as $val) { ?>
-									<th scope="col"><?= $val ?></th>
-								<?php } ?>
-							</tr>
-							<tr>
-								<?php foreach ($item["threshold"] as $val) { ?>
-									<th scope="col"><?= $val ?></th>
-								<?php } ?>
-							</tr>
-						<?php } ?>
-						</tbody>
-					</table>
-				</div>
-			</div>
-		</div>
-	</div>
+			<h1><?= $fuzzy->name ?></h1>
 
-	<div class="bs-docs-section">
-		<div class="row">
-			<div class="col-lg-12">
-				<div class="page-header">
-					<h1 id="tables">Fuzzy</h1>
-				</div>
+			<div class="bs-docs-section">
+				<div class="row">
+					<div class="col-lg-12">
+						<div class="page-header">
+							<h3 id="tables">Data</h3>
+						</div>
 
-				<div class="">
-					<?php foreach ($fuzzy as $a => $perrule) { ?>
-						<div class="bs-component" style="padding: 20px">
+						<div class="bs-component">
 							<table class="table table-hover">
 								<thead>
 								<tr>
-									<th colspan="<?= count($rules[$a]["types"]) ?>"><?= $rules[$a]["name"] ?></th>
-								</tr>
-								<tr>
-									<?php foreach ($rules[$a]["types"] as $item) { ?>
-										<th scope="col"><?= $item ?></th>
+									<?php foreach (end($fuzzy->data) as $key => $item) { ?>
+										<th scope="col"><?= $key ?></th>
 									<?php } ?>
 								</tr>
 								</thead>
 								<tbody>
-								<?php foreach ($perrule as $datum) { ?>
+								<?php foreach ($fuzzy->data as $datum) { ?>
 									<tr>
 										<?php foreach ($datum as $key => $item) { ?>
 											<th scope="col"><?= $item ?></th>
@@ -123,180 +76,239 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 								</tbody>
 							</table>
 						</div>
-					<?php } ?>
+					</div>
 				</div>
 			</div>
-		</div>
-	</div>
 
-	<div class="bs-docs-section">
-		<div class="row">
-			<div class="col-lg-12">
-				<div class="page-header">
-					<h1 id="tables">Sum Fuzzy</h1>
-				</div>
+			<div class="bs-docs-section">
+				<div class="row">
+					<div class="col-lg-12">
+						<div class="page-header">
+							<h3 id="tables">Rules</h3>
+						</div>
 
-				<div class="">
-					<?php foreach ($sum_fuzzy as $a => $perrule) { ?>
-						<div class="bs-component" style="padding: 20px">
+						<div class="bs-component">
 							<table class="table table-hover">
-								<thead>
-								<tr>
-									<th colspan="5"><?= $rules[$a]["name"] ?></th>
-								</tr>
-								<tr>
-									<th></th>
-									<th>all</th>
-									<th>rendah</th>
-									<th>sedang</th>
-									<th>tinggi</th>
-								</tr>
-								</thead>
 								<tbody>
-								<?php foreach ($perrule as $key => $datum) { ?>
+								<?php foreach ($fuzzy->rules as $item) { ?>
 									<tr>
-										<th scope="col"><?= $rules[$a]["types"][$key] ?></th>
-										<?php foreach ($datum as $item) { ?>
-											<th scope="col"><?= $item ?></th>
+										<th scope="col" rowspan="2"><?= $item["name"] ?></th>
+										<?php foreach ($item["types"] as $val) { ?>
+											<th scope="col"><?= $val ?></th>
+										<?php } ?>
+									</tr>
+									<tr>
+										<?php foreach ($item["threshold"] as $val) { ?>
+											<th scope="col"><?= $val ?></th>
 										<?php } ?>
 									</tr>
 								<?php } ?>
 								</tbody>
 							</table>
 						</div>
-					<?php } ?>
+					</div>
 				</div>
 			</div>
-		</div>
-	</div>
 
-	<div class="bs-docs-section">
-		<div class="row">
-			<div class="col-lg-12">
-				<div class="page-header">
-					<h1 id="tables">Entrophy</h1>
-				</div>
+			<?php if (!$fuzzy->result) { ?>
+				<div class="bs-docs-section">
+					<div class="row">
+						<div class="col-lg-12">
+							<div class="page-header">
+								<h3 id="tables">Fuzzy</h3>
+							</div>
 
-				<div class="bs-component">
-					<table class="table table-hover">
-						<tbody>
-						<?php foreach ($entrophy as $a => $item) { ?>
-							<tr>
-								<th><?= $rules[$a]["name"] ?></th>
-								<?php foreach ($item as $key => $val) { ?>
-									<th scope="col"><?= $rules[$a]["types"][$key] ?></th>
-									<th scope="col"><?= $val ?></th>
+							<div class="">
+								<?php foreach ($fuzzy->fuzzification as $a => $perrule) { ?>
+									<div class="bs-component" style="padding: 20px">
+										<table class="table table-hover">
+											<thead>
+											<tr>
+												<th colspan="<?= count($fuzzy->rules[$a]["types"]) ?>"><?= $fuzzy->rules[$a]["name"] ?></th>
+											</tr>
+											<tr>
+												<?php foreach ($fuzzy->rules[$a]["types"] as $item) { ?>
+													<th scope="col"><?= $item ?></th>
+												<?php } ?>
+											</tr>
+											</thead>
+											<tbody>
+											<?php foreach ($perrule as $datum) { ?>
+												<tr>
+													<?php foreach ($datum as $key => $item) { ?>
+														<th scope="col"><?= $item ?></th>
+													<?php } ?>
+												</tr>
+											<?php } ?>
+											</tbody>
+										</table>
+									</div>
 								<?php } ?>
-							</tr>
-						<?php } ?>
-						<tr>
-							<th>Total</th>
-							<th colspan="6"><?= $globalEntrophy ?></th>
-						</tr>
-						</tbody>
-					</table>
-				</div>
-			</div>
-		</div>
-	</div>
-
-	<div class="bs-docs-section">
-		<div class="row">
-			<div class="col-lg-12">
-				<div class="page-header">
-					<h1 id="tables">IG</h1>
+							</div>
+						</div>
+					</div>
 				</div>
 
-				<div class="bs-component">
-					<table class="table table-hover">
-						<tbody>
-						<?php foreach ($iG as $a => $item) { ?>
-							<tr>
-								<th><?= $rules[$a]["name"] ?></th>
-								<th scope="col"><?= $item ?></th>
-							</tr>
-						<?php } ?>
-						<tr>
-							<th>Highest</th>
-							<th><?= $rules[$highestIG]["name"] ?></th>
-						</tr>
-						</tbody>
-					</table>
-				</div>
-			</div>
-		</div>
-	</div>
+				<div class="bs-docs-section">
+					<div class="row">
+						<div class="col-lg-12">
+							<div class="page-header">
+								<h3 id="tables">Sum Fuzzy</h3>
+							</div>
 
-	<div class="bs-docs-section">
-		<div class="row">
-			<div class="col-lg-12">
-				<div class="page-header">
-					<h1 id="tables">Node Percentage</h1>
+							<div class="">
+								<?php foreach ($fuzzy->sum as $a => $perrule) { ?>
+									<div class="bs-component" style="padding: 20px">
+										<table class="table table-hover">
+											<thead>
+											<tr>
+												<th colspan="5"><?= $fuzzy->rules[$a]["name"] ?></th>
+											</tr>
+											<tr>
+												<th></th>
+												<th>all</th>
+												<th>rendah</th>
+												<th>sedang</th>
+												<th>tinggi</th>
+											</tr>
+											</thead>
+											<tbody>
+											<?php foreach ($perrule as $key => $datum) { ?>
+												<tr>
+													<th scope="col"><?= $fuzzy->rules[$a]["types"][$key] ?></th>
+													<?php foreach ($datum as $item) { ?>
+														<th scope="col"><?= $item ?></th>
+													<?php } ?>
+												</tr>
+											<?php } ?>
+											</tbody>
+										</table>
+									</div>
+								<?php } ?>
+							</div>
+						</div>
+					</div>
 				</div>
 
-				<div class="bs-component">
-					<table class="table table-hover">
-						<tbody>
-						<?php foreach ($pernode as $a => $item) { ?>
-							<tr>
-								<th colspan="3"><?= $rules[$a]["name"] ?></th>
-							</tr>
-							<?php foreach ($risk as $b => $r) { ?>
+				<div class="bs-docs-section">
+					<div class="row">
+						<div class="col-lg-12">
+							<div class="page-header">
+								<h3 id="tables">Entrophy</h3>
+							</div>
+
+							<div class="bs-component">
+								<table class="table table-hover">
+									<tbody>
+									<?php foreach ($fuzzy->entrophy as $a => $item) { ?>
+										<tr>
+											<th><?= $fuzzy->rules[$a]["name"] ?></th>
+											<?php foreach ($item as $key => $val) { ?>
+												<th scope="col"><?= $fuzzy->rules[$a]["types"][$key] ?></th>
+												<th scope="col"><?= $val ?></th>
+											<?php } ?>
+										</tr>
+									<?php } ?>
+									<tr>
+										<th>Total</th>
+										<th colspan="6"><?= $fuzzy->globalEntrophy ?></th>
+									</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="bs-docs-section">
+					<div class="row">
+						<div class="col-lg-12">
+							<div class="page-header">
+								<h3 id="tables">IG</h3>
+							</div>
+
+							<div class="bs-component">
+								<table class="table table-hover">
+									<tbody>
+									<?php foreach ($fuzzy->iG as $a => $item) { ?>
+										<tr>
+											<th><?= $fuzzy->rules[$a]["name"] ?></th>
+											<th scope="col"><?= $item ?></th>
+										</tr>
+									<?php } ?>
+									<tr>
+										<th>Highest</th>
+										<th><?= $fuzzy->rules[$fuzzy->highestIGFrom]["name"] ?></th>
+									</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="bs-docs-section">
+					<div class="row">
+						<div class="col-lg-12">
+							<div class="page-header">
+								<h3 id="tables">Node Percentage</h3>
+							</div>
+
+							<div class="bs-component">
+								<table class="table table-hover">
+									<tbody>
+									<?php foreach ($fuzzy->rules[$fuzzy->highestIGFrom]["types"] as $a => $rule) { ?>
+										<tr>
+											<th colspan="3"><?= $rule ?></th>
+										</tr>
+										<?php foreach ($fuzzy->risk as $b => $r) { ?>
+											<tr>
+												<th><?= $r ?></th>
+												<th><?= $fuzzy->pernode[$b][$a] ?></th>
+												<th><?= $fuzzy->pernodePercentage[$b][$a] ?></th>
+											</tr>
+										<?php } ?>
+									<?php } ?>
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+				</div>
+			<?php } ?>
+			<div class="bs-docs-section">
+				<div class="row">
+					<div class="col-lg-12">
+						<div class="page-header">
+							<h3 id="tables">Result</h3>
+						</div>
+
+						<div class="bs-component">
+							<table class="table table-hover">
+								<tbody>
 								<tr>
-									<th><?= $r ?></th>
-									<th><?= $pernode[$b][$a] ?></th>
-									<th><?= $pernodeP[$b][$a] ?></th>
+									<th>Result</th>
+									<th><?= $fuzzy->getResult() ?></th>
+									<th><a href="#tree">Back to Tree</a></th>
 								</tr>
-							<?php } ?>
-						<?php } ?>
-						</tbody>
-					</table>
+								<?php if (!$fuzzy->result) { ?>
+
+									<?php foreach ($fuzzy->children as $a => $item) { ?>
+										<tr>
+											<th><a href="#<?= $item->name ?>">Child <?= $a + 1 ?></a></th>
+											<th><?= $item->name ?></th>
+											<th><?= $item->getResult() ?></th>
+										</tr>
+									<?php } ?>
+								<?php } ?>
+								</tbody>
+							</table>
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>
-	</div>
-
-	<div class="bs-docs-section">
-		<div class="row">
-			<div class="col-lg-12">
-				<div class="page-header">
-					<h1 id="tables">Result</h1>
-				</div>
-
-				<div class="bs-component">
-					<table class="table table-hover">
-						<tbody>
-						<tr>
-							<th>Result</th>
-							<th><?= $result ?></th>
-						</tr>
-						<?php foreach ($children as $a => $item) { ?>
-							<tr>
-								<th>Child <?= $a + 1 ?></th>
-								<th><?= $item->name ?></th>
-								<th><?= $item->getResult() ?></th>
-							</tr>
-						<?php } ?>
-						</tbody>
-					</table>
-				</div>
-			</div>
-		</div>
-	</div>
-
-	<div class="bs-docs-section">
-		<div class="row">
-			<div class="col-lg-12">
-				<div class="page-header">
-					<h1 id="tables">Tree</h1>
-				</div>
-
-				<div class="bs-component">
-					<?=$tree?>
-				</div>
-			</div>
-		</div>
-	</div>
+	<?php } ?>
 
 	<p class="footer">Page rendered in <strong>{elapsed_time}</strong>
 		seconds. <?php echo (ENVIRONMENT === 'development') ? 'CodeIgniter Version <strong>' . CI_VERSION . '</strong>' : '' ?>

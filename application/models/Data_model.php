@@ -62,7 +62,7 @@ class Data_model extends CI_model
 				"threshold" => [200, 230, 270]
 			],
 			[
-				"name" => "berat_badan",
+				"name" => "lingkar_perut",
 				"types" => ["normal", "obesitas"],
 				"threshold" => [90, 100]
 			],

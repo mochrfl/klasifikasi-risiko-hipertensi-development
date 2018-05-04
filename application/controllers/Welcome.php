@@ -23,21 +23,9 @@ class Welcome extends CI_Controller
 	{
 		$fuzzy = $this->data_model->get_fuzzy();
 
-		$this->load->view('welcome_message', [
-			"risk" => $fuzzy->risk,
-			"data" => $fuzzy->data,
-			"rules" => $fuzzy->rules,
-			"fuzzy" => $fuzzy->fuzzification,
-			"sum_fuzzy" => $fuzzy->sum,
-			"entrophy" => $fuzzy->entrophy,
-			"iG" => $fuzzy->iG,
-			"highestIG" => $fuzzy->highestIGFrom,
-			"globalEntrophy" => $fuzzy->globalEntrophy,
-			"pernode" => $fuzzy->pernode,
-			"pernodeP" => $fuzzy->pernodePercentage,
-			"result" => $fuzzy->getResult(),
-			"children" => $fuzzy->children,
-			"tree" => $fuzzy->printTree(),
-		]);
+		$data_fuzzys = $fuzzy->arrayFuzzy();
+		$tree = $fuzzy->printTree();
+
+		$this->load->view('welcome_message', compact("data_fuzzys", "tree"));
 	}
 }
