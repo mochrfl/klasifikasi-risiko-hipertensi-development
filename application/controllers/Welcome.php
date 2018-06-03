@@ -5,28 +5,37 @@ class Welcome extends CI_Controller
 {
 
 	/**
-	 * Index Page for this controller.
+	 * Jadi di controller pisah jadi beberapa route,
 	 *
-	 * Maps to the following URL
-	 *        http://example.com/index.php/welcome
-	 *    - or -
-	 *        http://example.com/index.php/welcome/index
-	 *    - or -
-	 * Since this controller is set as the default controller in
-	 * config/routes.php, it's displayed at http://example.com/
+	 * yang pertama route buat nampilin data latih dan testing,
+	 *  - halaman daftar data
+	 *  - route post import data ke db (kalau mau dibikin crud pake form bisa tp ribet, jgn)
 	 *
-	 * So any other public methods not prefixed with an underscore will
-	 * map to /index.php/welcome/<method_name>
-	 * @see https://codeigniter.com/user_guide/general/urls.html
+	 * route buat setting
+	 *  - ini route buat nyimpan rules dlm bentuk json. langsung json aja satu input form biar gampang.
+	 *    (kalau pingin ribet bikin form input banyak, tp nanti sebelum save ke db atur jadi json array, jgn sampai salah format)
+	 *
+	 * route buat pelatihan
+	 *  - route buat ngitung fuzzy dari data yg udah ada di db,
+	 *    terus hasil tree-rules nya simpen di db,
+	 *    terus hasilnya di print di layar (route index dibawah ini)
+	 *
+	 * route pengujian
+	 *  - route ini cuman bisa kalo data tree-rules di db udah ada.
+	 *    buat pengujian.
+	 *    terus ditampilin data pengujiannya.
 	 */
 	public function index()
 	{
+		//ini proses perhitungan fuzzy disini
 		$fuzzy = $this->data_model->get_fuzzy();
+
 
 		$data_fuzzys = $fuzzy->arrayFuzzy();
 		$tree = $fuzzy->printTree();
 		$array_tree = json_encode($fuzzy->arrayTree());
 
+		//ini dipisah jadi route pengujian sendiri yak
 		$pengujian = $this->data_model->pengujian();
 
 		$this->load->view('welcome_message', compact("data_fuzzys", "tree", "array_tree", "pengujian"));

@@ -198,23 +198,41 @@ class Fuzzification
 
 	function extractTree()
 	{
+		// ini buat bikin tree dari perhitungan fuzzy, IG, dll diatas.
 		$this->children = [];
 
 		$this->pernode = [];
 		$this->pernodePercentage = [];
 
+		//ini for masing2 anaknya - berdasarkan types, contoh: "normal", "pra" sama "hipertensi"
 		for ($i = 0; $i < count($this->rules[$this->highestIGFrom]["types"]); $i++) {
+			//untuk masing-masing anak, contoh yg normal.
+
+			//pertama di filter dulu cuman data yg value fuzzy "normal" nya > 0 yg diambil.
 			$childData = array_filter($this->data, function ($datum) use ($i) {
 				return $this->fuzzification[$this->chosenRule][$datum["id"] - 1][$i] > 0;
 			});
 
+			// rules yg terpilih kan hipertensi.
+			// jadi rules buat anak kan harus diilangin hipertensi nya.
 			$childRules = $this->rules;
 			unset($childRules[$this->highestIGFrom]);
 			$childRules = array_values($childRules);
+			// awalnya rules ada 10 jadi tinggal 9
 
 			$name = $this->chosenRule . " - " . $this->rules[$this->highestIGFrom]["types"][$i];
+
+			// persiapan itung fuzzifikasi anak pake data yg udah di filter sama rules yg udah dikurangi juga.
+			// untuk tipe ini aja, (masih didalam for) cth: skrg lagi looping buat type yg "normal"
+
 			$this->children[] = new Fuzzification($childData, $childRules, $name);
 
+			// masing2 udah ada anaknya, tp proses fuzzyfikasi anak belum dijalanin.
+			// dilihat dulu apa % nya ada yg lebih dari 70?
+			// cth, kalau tinggi lebih dari 70 kan berarti udah jelas resiko nya tinggi
+
+			// nah, ini ngitung persen nya berapa, threshold hardcoded 70%
+			// sesuai cth td, ini masih yg "normal" aja ya
 			$sum = 0;
 			for ($j = 0; $j < count($this->risk); $j++) {
 				$this->pernode[$j][$i] = 0;
@@ -223,20 +241,29 @@ class Fuzzification
 						$this->pernode[$j][$i] += $this->fuzzification[$this->chosenRule][$datum["id"] - 1][$i];
 				}
 				$sum += $this->pernode[$j][$i];
+				// ini ngitung berapa total fuzzy nya untuk masing2 "rendah", "sedang", "tinggi"
 			}
 			for ($j = 0; $j < count($this->risk); $j++) {
+				// ini dijadiin %
 				$this->pernodePercentage[$j][$i] = $this->pernode[$j][$i] / $sum * 100;
 
+				// kalau > 70% langsung di set result nya,
+				// cth di "normal", ketemu hasil "tinggi" > 78%, yaudah.
 				if ($this->pernodePercentage[$j][$i] >= 70) {
 					$this->children[$i]->setResult($this->risk[$j]);
 				}
 			}
 
+			// nah kalau ternyata ngga sampe 70% (result belum di set),
+			// kita jalanin fuzzifikasi, dan tree-nya bakal jadi makin dalam.
 			if (!$this->children[$i]->result) {
 				$this->children[$i]->start();
 			}
 		}
 	}
+
+
+	// dibawah ini fungsi2 buat nampilin sama set data, masalah presentasi data lah.
 
 	function setResult($val)
 	{

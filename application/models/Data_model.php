@@ -8,7 +8,7 @@ class Data_model extends CI_model
 		parent::__construct();
 		require_once APPPATH . "models/Fuzzification.php";
 	}
-
+	
 	public function get_all_data_training()
 	{
 		$this->db->select('*');
@@ -27,6 +27,14 @@ class Data_model extends CI_model
 		$query = $this->db->get();
 
 		return $query->result_array();
+	}
+	
+	public function import_data(){
+		//todo	ini buat import data baru
+	}
+	
+	public function save_all_rule(){
+		//todo	ini buat save rules 
 	}
 
 	public function get_all_rule()
@@ -95,13 +103,14 @@ class Data_model extends CI_model
 
 	public function get_all_initialthreshold()
 	{
-		$this->db->select('*');
-		$this->db->from('tb_initialthreshold');
-		$query = $this->db->get();
-
-		return $query->result();
+//		todo  ini threshold ambil dr db juga, nyimpan ke db bareng sama nyimpen setting diatas
 	}
 
+	public function save_formed_tree()
+	{
+		// todo  hasil pelatihan simpen ke db disini,
+	}
+	
 	public function get_formed_tree()
 	{
 		// todo: INI DUMMY, UBAH AMBIL DARI DB YA!
@@ -132,8 +141,6 @@ class Data_model extends CI_model
 		$results = [];
 
 		foreach ($transpose as $item) {
-//			print_r($item);
-//			echo "<br>";
 			$results[] = $this->single_pengujian($item, $simple_tree);
 		}
 
@@ -142,8 +149,8 @@ class Data_model extends CI_model
 
 	private function single_pengujian($data_fuzzy, $node)
 	{
+		//ini bukan dummy ya. emang gini prosesnya.
 		if ($node->result) {
-			echo "halo";
 			switch ($node->result) {
 				case "Rendah":
 					return [1, 0, 0];
@@ -181,6 +188,8 @@ class Data_model extends CI_model
 		$rules = $this->get_all_rule();
 
 		$fuzzification = new Fuzzification($data, $rules);
+		
+		//todo  panggil save_formed_tree disini. save ke db tree-rules nya.
 
 		return $fuzzification;
 	}
