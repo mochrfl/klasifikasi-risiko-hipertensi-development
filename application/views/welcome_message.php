@@ -43,8 +43,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				<div class="bs-component">
 					<code><?= $array_tree ?></code>
 				</div>
-
 				<input value="SAVE TO DB" class="btn btn-primary">
+				<h3>Total Leaf (rules) = <?=$total_leaf?></h3>
 			</div>
 		</div>
 	</div>
@@ -63,19 +63,27 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 							<?php foreach (end($data_fuzzys)->risk as $item) { ?>
 								<th scope="col"><?= $item ?></th>
 							<?php } ?>
+							<th scope="col">Actual</th>
+							<th scope="col">Error</th>
 						</tr>
 						</thead>
 						<tbody>
-						<?php foreach ($pengujian as $key => $datum) { ?>
+						<?php $totalError = 0;
+						foreach ($pengujian as $key => $datum) { ?>
 							<tr>
 								<th scope="col"><?= $key + 1 ?></th>
 								<?php foreach ($datum as $item) { ?>
 									<th scope="col"><?= $item ?></th>
 								<?php } ?>
 							</tr>
-						<?php } ?>
+						<?php
+							$totalError += $datum[4];
+						}
+						$akurasi = (count($pengujian) - $totalError)/count($pengujian) ?>
 						</tbody>
 					</table>
+
+					<h3>Akurasi = <?=$akurasi?></h3>
 				</div>
 			</div>
 		</div>

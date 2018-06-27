@@ -8,7 +8,7 @@ class Data_model extends CI_model
 		parent::__construct();
 		require_once APPPATH . "models/Fuzzification.php";
 	}
-	
+
 	public function get_all_data_training()
 	{
 		$this->db->select('*');
@@ -28,12 +28,14 @@ class Data_model extends CI_model
 
 		return $query->result_array();
 	}
-	
-	public function import_data(){
+
+	public function import_data()
+	{
 		//todo	ini buat import data baru
 	}
-	
-	public function save_all_rule(){
+
+	public function save_all_rule()
+	{
 		//todo	ini buat save rules 
 	}
 
@@ -110,12 +112,12 @@ class Data_model extends CI_model
 	{
 		// todo  hasil pelatihan simpen ke db disini,
 	}
-	
+
 	public function get_formed_tree()
 	{
 		// todo: INI DUMMY, UBAH AMBIL DARI DB YA!
 
-		$get_from_db = '{"name":"sum_td","result":false,"children":[{"name":"olahraga","result":false,"children":[{"result":"Sedang"},{"result":"Rendah"}]},{"name":"k_kafein","result":false,"children":[{"name":"olahraga","result":false,"children":[{"name":"makanan_berlemak","result":false,"children":[{"result":"Sedang"},{"name":"umur","result":false,"children":[{"result":"Sedang"},{"result":"Tinggi"}]}]},{"result":"Rendah"}]},{"name":"umur","result":false,"children":[{"name":"k_gula","result":false,"children":[{"result":"Rendah"},{"result":"Sedang"}]},{"name":"merokok","result":false,"children":[{"name":"k_gula","result":false,"children":[{"name":"makanan_berlemak","result":false,"children":[{"name":"lingkar_perut","result":false,"children":[{"result":"Sedang"},{"result":"Tinggi"}]},{"result":"Tinggi"}]},{"result":"Sedang"}]},{"result":"Sedang"}]}]},{"result":"Tinggi"}]},{"result":"Tinggi"}]}';
+		$get_from_db = '{"name":"sum_td","result":false,"children":[{"name":"olahraga","result":false,"children":[{"result":"Sedang"},{"name":"merokok","result":false,"children":[{"result":"Rendah"},{"name":"k_kafein","result":false,"children":[{"name":"makanan_berlemak","result":false,"children":[{"result":"Rendah"},{"result":"Sedang"}]},{"name":"umur","result":false,"children":[{"result":"Rendah"},{"result":"Sedang"}]},{"result":"Sedang"}]}]}]},{"name":"k_kafein","result":false,"children":[{"name":"olahraga","result":false,"children":[{"name":"makanan_berlemak","result":false,"children":[{"result":"Sedang"},{"name":"umur","result":false,"children":[{"result":"Sedang"},{"name":"lingkar_perut","result":false,"children":[{"result":"Tinggi"},{"result":"Tinggi"}]}]}]},{"name":"makanan_berlemak","result":false,"children":[{"result":"Rendah"},{"result":"Sedang"}]}]},{"name":"umur","result":false,"children":[{"name":"k_gula","result":false,"children":[{"result":"Rendah"},{"result":"Sedang"}]},{"name":"merokok","result":false,"children":[{"name":"k_gula","result":false,"children":[{"name":"makanan_berlemak","result":false,"children":[{"name":"lingkar_perut","result":false,"children":[{"name":"bmi","result":false,"children":[{"result":"Sedang"},{"name":"k_garam","result":false,"children":[{"result":"Tinggi"},{"result":"Sedang"}]}]},{"result":"Tinggi"}]},{"result":"Tinggi"}]},{"name":"k_garam","result":false,"children":[{"result":"Sedang"},{"result":"Tinggi"}]}]},{"name":"k_garam","result":false,"children":[{"result":"Sedang"},{"result":"Sedang"}]}]}]},{"name":"k_garam","result":false,"children":[{"result":"Sedang"},{"name":"k_gula","result":false,"children":[{"result":"Tinggi"},{"name":"olahraga","result":false,"children":[{"result":"Tinggi"},{"result":"Sedang"}]}]}]}]},{"name":"makanan_berlemak","result":false,"children":[{"name":"umur","result":false,"children":[{"name":"k_garam","result":false,"children":[{"result":"Sedang"},{"result":"Tinggi"}]},{"name":"k_kafein","result":false,"children":[{"name":"olahraga","result":false,"children":[{"result":"Sedang"},{"result":"Tinggi"}]},{"name":"k_garam","result":false,"children":[{"name":"olahraga","result":false,"children":[{"result":"Sedang"},{"result":"Tinggi"}]},{"name":"olahraga","result":false,"children":[{"result":"Tinggi"},{"name":"merokok","result":false,"children":[{"result":"Tinggi"},{"result":"Sedang"}]}]}]},{"name":"k_gula","result":false,"children":[{"result":"Tinggi"},{"result":"Tinggi"}]}]}]},{"result":"Tinggi"}]}]}';
 
 		return json_decode($get_from_db);
 	}
@@ -137,11 +139,13 @@ class Data_model extends CI_model
 
 		$simple_tree = $this->get_formed_tree();
 
-		print_r($simple_tree);
+//		print_r($simple_tree);
 		$results = [];
 
-		foreach ($transpose as $item) {
-			$results[] = $this->single_pengujian($item, $simple_tree);
+		foreach ($transpose as $k => $item) {
+			$results[$k] = $this->single_pengujian($item, $simple_tree);
+			$results[$k][] = $data[$k]["risiko_hipertensi"];
+			$results[$k][] = 1 - $results[$k][$data[$k]["risiko_hipertensi"] - 1];
 		}
 
 		return $results;
@@ -178,6 +182,7 @@ class Data_model extends CI_model
 			}
 
 		}
+
 		return $result;
 	}
 
@@ -188,7 +193,7 @@ class Data_model extends CI_model
 		$rules = $this->get_all_rule();
 
 		$fuzzification = new Fuzzification($data, $rules);
-		
+
 		//todo  panggil save_formed_tree disini. save ke db tree-rules nya.
 
 		return $fuzzification;

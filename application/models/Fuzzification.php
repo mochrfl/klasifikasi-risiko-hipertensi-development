@@ -341,6 +341,20 @@ class Fuzzification
 		return $arr;
 	}
 
+	function totalLeaf()
+	{
+		$total = 0;
+
+		if ($this->children != null) {
+			foreach ($this->children as $child) {
+				$total += $child->totalLeaf();
+			}
+		} else
+			return 1;
+
+		return $total;
+	}
+
 	function arrayFuzzy()
 	{
 		$fuzzy_data = [$this];

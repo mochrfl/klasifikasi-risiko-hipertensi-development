@@ -31,6 +31,7 @@ class Welcome extends CI_Controller
 		$fuzzy = $this->data_model->get_fuzzy();
 
 
+		$total_leaf = $fuzzy->totalLeaf();
 		$data_fuzzys = $fuzzy->arrayFuzzy();
 		$tree = $fuzzy->printTree();
 		$array_tree = json_encode($fuzzy->arrayTree());
@@ -38,6 +39,6 @@ class Welcome extends CI_Controller
 		//ini dipisah jadi route pengujian sendiri yak
 		$pengujian = $this->data_model->pengujian();
 
-		$this->load->view('welcome_message', compact("data_fuzzys", "tree", "array_tree", "pengujian"));
+		$this->load->view('welcome_message', compact("data_fuzzys", "total_leaf", "tree", "array_tree", "pengujian"));
 	}
 }
