@@ -193,6 +193,13 @@ class Fuzzification
 			}
 		}
 
+		if (!count($this->rules)) {
+			echo $this->name;
+			echo "<br>";
+			print_r($this->data);
+			echo "<br>";
+			print_r($this->rules);
+		}
 		$this->chosenRule = $this->rules[$this->highestIGFrom]["name"];
 	}
 
@@ -245,18 +252,25 @@ class Fuzzification
 			}
 			for ($j = 0; $j < count($this->risk); $j++) {
 				// ini dijadiin %
-				$this->pernodePercentage[$j][$i] = $this->pernode[$j][$i] / $sum * 100;
+				if ($sum == 0)
+					$this->pernodePercentage[$j][$i] = -1;
+				else $this->pernodePercentage[$j][$i] = $this->pernode[$j][$i] / $sum * 100;
 
 				// kalau > 70% langsung di set result nya,
 				// cth di "normal", ketemu hasil "tinggi" > 78%, yaudah.
-				if ($this->pernodePercentage[$j][$i] >= 70) {
+				if ($this->pernodePercentage[$j][$i] >= 80) {
 					$this->children[$i]->setResult($this->risk[$j]);
+				} else if ($this->pernodePercentage[$j][$i] == -1) {
+					$this->children[$i]->setResult("No Data");
 				}
 			}
 
 			// nah kalau ternyata ngga sampe 70% (result belum di set),
 			// kita jalanin fuzzifikasi, dan tree-nya bakal jadi makin dalam.
 			if (!$this->children[$i]->result) {
+				if (count($childRules) === 1) {
+					$this->children[$i]->setResult($this->printPercentage($this->pernodePercentage, $i));
+				} else
 				$this->children[$i]->start();
 			}
 		}
@@ -268,6 +282,16 @@ class Fuzzification
 	function setResult($val)
 	{
 		$this->result = $val;
+	}
+
+	function printPercentage($arr, $i)
+	{
+		$str = "";
+		for ($j = 0; $j < count($this->risk); $j++) {
+			$str .= $this->risk[$j] . " - " . $arr[$j][$i] . "% ";
+		}
+
+		return $str;
 	}
 
 	function getResult()
