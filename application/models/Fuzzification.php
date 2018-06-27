@@ -2,6 +2,7 @@
 
 class Fuzzification
 {
+	public static $initTotalData;
 	public $isRoot = false;
 	public $name;
 
@@ -39,7 +40,7 @@ class Fuzzification
 		} else {
 			$this->name = "root";
 			$this->isRoot = true;
-
+			self::$initTotalData = $this->totalData;
 			$this->start();
 		}
 	}
@@ -240,6 +241,9 @@ class Fuzzification
 
 			// nah, ini ngitung persen nya berapa, threshold hardcoded 70%
 			// sesuai cth td, ini masih yg "normal" aja ya
+
+			$thresholdK = 70;
+			$thresholdN = 5;
 			$sum = 0;
 			for ($j = 0; $j < count($this->risk); $j++) {
 				$this->pernode[$j][$i] = 0;
@@ -250,28 +254,29 @@ class Fuzzification
 				$sum += $this->pernode[$j][$i];
 				// ini ngitung berapa total fuzzy nya untuk masing2 "rendah", "sedang", "tinggi"
 			}
+
+			$max = 0;
 			for ($j = 0; $j < count($this->risk); $j++) {
 				// ini dijadiin %
-				if ($sum == 0)
-					$this->pernodePercentage[$j][$i] = -1;
-				else $this->pernodePercentage[$j][$i] = $this->pernode[$j][$i] / $sum * 100;
-
-				// kalau > 70% langsung di set result nya,
-				// cth di "normal", ketemu hasil "tinggi" > 78%, yaudah.
-				if ($this->pernodePercentage[$j][$i] >= 80) {
-					$this->children[$i]->setResult($this->risk[$j]);
-				} else if ($this->pernodePercentage[$j][$i] == -1) {
-					$this->children[$i]->setResult("No Data");
-				}
+				$this->pernodePercentage[$j][$i] = $this->pernode[$j][$i] / $sum * 100;
+				if ($this->pernodePercentage[$j][$i] >= $this->pernodePercentage[$max][$i])
+					$max = $j;
 			}
 
 			// nah kalau ternyata ngga sampe 70% (result belum di set),
 			// kita jalanin fuzzifikasi, dan tree-nya bakal jadi makin dalam.
 			if (!$this->children[$i]->result) {
-				if (count($childRules) === 1) {
-					$this->children[$i]->setResult($this->printPercentage($this->pernodePercentage, $i));
+//				kalau > 70% langsung di set result nya,
+//				cth di "normal", ketemu hasil "tinggi" > 78%, yaudah.
+				if ($this->pernodePercentage[$max][$i] >= $thresholdK) {
+					$this->children[$i]->setResult($this->risk[$max]);
+
+//				cek thresholdN, walaupun % kurang dari 70%, kalau datanya udah menipis tetep dipilih yang paling maks,
+//				cth di "normal", ketemu hasil "tinggi" > 54%, tp data kurang dari 5%, yaudah terpaksa dipilih normal.
+				} else if (count($childData) / self::$initTotalData * 100 < $thresholdN) {
+					$this->children[$i]->setResult($this->risk[$max]);
 				} else
-				$this->children[$i]->start();
+					$this->children[$i]->start();
 			}
 		}
 	}
@@ -282,16 +287,6 @@ class Fuzzification
 	function setResult($val)
 	{
 		$this->result = $val;
-	}
-
-	function printPercentage($arr, $i)
-	{
-		$str = "";
-		for ($j = 0; $j < count($this->risk); $j++) {
-			$str .= $this->risk[$j] . " - " . $arr[$j][$i] . "% ";
-		}
-
-		return $str;
 	}
 
 	function getResult()
