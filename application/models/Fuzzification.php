@@ -242,7 +242,7 @@ class Fuzzification
 			// nah, ini ngitung persen nya berapa, threshold hardcoded 70%
 			// sesuai cth td, ini masih yg "normal" aja ya
 
-			$thresholdK = 70;
+			$thresholdK = 90;
 			$thresholdN = 5;
 			$sum = 0;
 			for ($j = 0; $j < count($this->risk); $j++) {
@@ -273,7 +273,7 @@ class Fuzzification
 
 //				cek thresholdN, walaupun % kurang dari 70%, kalau datanya udah menipis tetep dipilih yang paling maks,
 //				cth di "normal", ketemu hasil "tinggi" > 54%, tp data kurang dari 5%, yaudah terpaksa dipilih normal.
-				} else if (count($childData) / self::$initTotalData * 100 < $thresholdN) {
+				} else if (count($childData) / self::$initTotalData * 100 < $thresholdN || count($childRules) <= 1) {
 					$this->children[$i]->setResult($this->risk[$max]);
 				} else
 					$this->children[$i]->start();
