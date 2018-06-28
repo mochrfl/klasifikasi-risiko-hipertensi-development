@@ -144,8 +144,16 @@ class Data_model extends CI_model
 
 		foreach ($transpose as $k => $item) {
 			$results[$k] = $this->single_pengujian($item, $simple_tree);
+
+			$max_key = 0;
+			foreach ($results[$k] as $key => $datum) {
+				if ($datum > $results[$k][$max_key]) {
+					$max_key = $key;
+				}
+			}
+
 			$results[$k][] = $data[$k]["risiko_hipertensi"];
-			$results[$k][] = 1 - $results[$k][$data[$k]["risiko_hipertensi"] - 1];
+			$results[$k][] = $data[$k]["risiko_hipertensi"] - 1 != $max_key ? 1 : 0;
 		}
 
 		return $results;
@@ -170,7 +178,6 @@ class Data_model extends CI_model
 			print_r($node->name);
 		else {
 			$data = $data_fuzzy[$node->name];
-
 
 			foreach ($data as $key => $datum) {
 				if ($datum > 0) {
