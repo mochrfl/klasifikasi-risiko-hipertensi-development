@@ -43,6 +43,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				<div class="bs-component">
 					<code><?= $array_tree ?></code>
 				</div>
+				<div class="bs-component">
+					<code><?= $table_rules ?></code>
+				</div>
 				<input value="SAVE TO DB" class="btn btn-primary">
 				<h3>Total Leaf (rules) = <?=$total_leaf?></h3>
 			</div>

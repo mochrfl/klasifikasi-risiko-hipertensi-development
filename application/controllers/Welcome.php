@@ -35,10 +35,11 @@ class Welcome extends CI_Controller
 		$data_fuzzys = $fuzzy->arrayFuzzy();
 		$tree = $fuzzy->printTree();
 		$array_tree = json_encode($fuzzy->arrayTree());
+		$table_rules = json_encode($fuzzy->tableOfRules());
 
 		//ini dipisah jadi route pengujian sendiri yak
 		$pengujian = $this->data_model->pengujian();
 
-		$this->load->view('welcome_message', compact("data_fuzzys", "total_leaf", "tree", "array_tree", "pengujian"));
+		$this->load->view('welcome_message', compact("table_rules", "data_fuzzys", "total_leaf", "tree", "array_tree", "pengujian"));
 	}
 }

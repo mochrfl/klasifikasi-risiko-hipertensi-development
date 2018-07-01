@@ -108,8 +108,10 @@ class Data_model extends CI_model
 //		todo  ini threshold ambil dr db juga, nyimpan ke db bareng sama nyimpen setting diatas
 	}
 
-	public function save_formed_tree()
+	public function save_formed_tree($data_json_tree, $data_json_table)
 	{
+		// dipake lah ini biar rapi, dibuat function save ke db nya
+		// $this->db->save();
 		// todo  hasil pelatihan simpen ke db disini,
 	}
 
@@ -122,7 +124,16 @@ class Data_model extends CI_model
 		return json_decode($get_from_db);
 	}
 
-	public function pengujian()
+	public function get_formed_table_of_rules()
+	{
+		// todo: INI DUMMY, UBAH AMBIL DARI DB YA!
+
+		$get_from_db = '[{"sum_td":"0","olahraga":"0","result":"Sedang"},{"sum_td":"0","olahraga":"1","merokok":"0","result":"Rendah"},{"sum_td":"0","olahraga":"1","merokok":"1","k_kafein":"0","makanan_berlemak":"0","result":"Rendah"},{"sum_td":"0","olahraga":"1","merokok":"1","k_kafein":"0","makanan_berlemak":"1","result":"Sedang"},{"sum_td":"0","olahraga":"1","merokok":"1","k_kafein":"1","umur":"0","result":"Rendah"},{"sum_td":"0","olahraga":"1","merokok":"1","k_kafein":"1","umur":"1","result":"Sedang"},{"sum_td":"0","olahraga":"1","merokok":"1","k_kafein":"2","result":"Sedang"},{"sum_td":"1","k_kafein":"0","olahraga":"0","makanan_berlemak":"0","result":"Sedang"},{"sum_td":"1","k_kafein":"0","olahraga":"0","makanan_berlemak":"1","umur":"0","result":"Sedang"},{"sum_td":"1","k_kafein":"0","olahraga":"0","makanan_berlemak":"1","umur":"1","lingkar_perut":"0","result":"Tinggi"},{"sum_td":"1","k_kafein":"0","olahraga":"0","makanan_berlemak":"1","umur":"1","lingkar_perut":"1","result":"Tinggi"},{"sum_td":"1","k_kafein":"0","olahraga":"1","makanan_berlemak":"0","result":"Rendah"},{"sum_td":"1","k_kafein":"0","olahraga":"1","makanan_berlemak":"1","result":"Sedang"},{"sum_td":"1","k_kafein":"1","umur":"0","k_gula":"0","result":"Rendah"},{"sum_td":"1","k_kafein":"1","umur":"0","k_gula":"1","result":"Sedang"},{"sum_td":"1","k_kafein":"1","umur":"1","merokok":"0","k_gula":"0","makanan_berlemak":"0","lingkar_perut":"0","bmi":"0","result":"Sedang"},{"sum_td":"1","k_kafein":"1","umur":"1","merokok":"0","k_gula":"0","makanan_berlemak":"0","lingkar_perut":"0","bmi":"1","k_garam":"0","result":"Tinggi"},{"sum_td":"1","k_kafein":"1","umur":"1","merokok":"0","k_gula":"0","makanan_berlemak":"0","lingkar_perut":"0","bmi":"1","k_garam":"1","result":"Sedang"},{"sum_td":"1","k_kafein":"1","umur":"1","merokok":"0","k_gula":"0","makanan_berlemak":"0","lingkar_perut":"1","result":"Tinggi"},{"sum_td":"1","k_kafein":"1","umur":"1","merokok":"0","k_gula":"0","makanan_berlemak":"1","result":"Tinggi"},{"sum_td":"1","k_kafein":"1","umur":"1","merokok":"0","k_gula":"1","k_garam":"0","result":"Sedang"},{"sum_td":"1","k_kafein":"1","umur":"1","merokok":"0","k_gula":"1","k_garam":"1","result":"Tinggi"},{"sum_td":"1","k_kafein":"1","umur":"1","merokok":"1","k_garam":"0","result":"Sedang"},{"sum_td":"1","k_kafein":"1","umur":"1","merokok":"1","k_garam":"1","result":"Sedang"},{"sum_td":"1","k_kafein":"2","k_garam":"0","result":"Sedang"},{"sum_td":"1","k_kafein":"2","k_garam":"1","k_gula":"0","result":"Tinggi"},{"sum_td":"1","k_kafein":"2","k_garam":"1","k_gula":"1","olahraga":"0","result":"Tinggi"},{"sum_td":"1","k_kafein":"2","k_garam":"1","k_gula":"1","olahraga":"1","result":"Sedang"},{"sum_td":"2","makanan_berlemak":"0","umur":"0","k_garam":"0","result":"Sedang"},{"sum_td":"2","makanan_berlemak":"0","umur":"0","k_garam":"1","result":"Tinggi"},{"sum_td":"2","makanan_berlemak":"0","umur":"1","k_kafein":"0","olahraga":"0","result":"Sedang"},{"sum_td":"2","makanan_berlemak":"0","umur":"1","k_kafein":"0","olahraga":"1","result":"Tinggi"},{"sum_td":"2","makanan_berlemak":"0","umur":"1","k_kafein":"1","k_garam":"0","olahraga":"0","result":"Sedang"},{"sum_td":"2","makanan_berlemak":"0","umur":"1","k_kafein":"1","k_garam":"0","olahraga":"1","result":"Tinggi"},{"sum_td":"2","makanan_berlemak":"0","umur":"1","k_kafein":"1","k_garam":"1","olahraga":"0","result":"Tinggi"},{"sum_td":"2","makanan_berlemak":"0","umur":"1","k_kafein":"1","k_garam":"1","olahraga":"1","merokok":"0","result":"Tinggi"},{"sum_td":"2","makanan_berlemak":"0","umur":"1","k_kafein":"1","k_garam":"1","olahraga":"1","merokok":"1","result":"Sedang"},{"sum_td":"2","makanan_berlemak":"0","umur":"1","k_kafein":"2","k_gula":"0","result":"Tinggi"},{"sum_td":"2","makanan_berlemak":"0","umur":"1","k_kafein":"2","k_gula":"1","result":"Tinggi"},{"sum_td":"2","makanan_berlemak":"1","result":"Tinggi"}]';
+
+		return json_decode($get_from_db);
+	}
+
+	public function pengujian($withNode = false)
 	{
 		$data = $this->get_all_data_testing();
 
@@ -137,13 +148,18 @@ class Data_model extends CI_model
 			}
 		}
 
-		$simple_tree = $this->get_formed_tree();
+		if ($withNode)
+			$simple_tree = $this->get_formed_tree();
+		else
+			$simple_tree = $this->get_formed_table_of_rules();
 
-//		print_r($simple_tree);
 		$results = [];
 
 		foreach ($transpose as $k => $item) {
-			$results[$k] = $this->single_pengujian($item, $simple_tree);
+			if ($withNode)
+				$results[$k] = $this->single_pengujian_node($item, $simple_tree);
+			else
+				$results[$k] = $this->single_pengujian($item, $simple_tree);
 
 			$max_key = 0;
 			foreach ($results[$k] as $key => $datum) {
@@ -159,7 +175,7 @@ class Data_model extends CI_model
 		return $results;
 	}
 
-	private function single_pengujian($data_fuzzy, $node)
+	private function single_pengujian_node($data_fuzzy, $node)
 	{
 		//ini bukan dummy ya. emang gini prosesnya.
 		if ($node->result) {
@@ -174,23 +190,41 @@ class Data_model extends CI_model
 		}
 
 		$result = [0, 0, 0];
-		if (!isset($data_fuzzy[$node->name]))
-			print_r($node->name);
-		else {
-			$data = $data_fuzzy[$node->name];
+		$data = $data_fuzzy[$node->name];
 
-			foreach ($data as $key => $datum) {
-				if ($datum > 0) {
-					$ch_val = $this->single_pengujian($data_fuzzy, $node->children[$key]);
-					foreach ($result as $k => $r) {
-						$result[$k] += $datum * $ch_val[$k];
-					}
+		foreach ($data as $key => $datum) {
+			if ($datum > 0) {
+				$ch_val = $this->single_pengujian_node($data_fuzzy, $node->children[$key]);
+				foreach ($result as $k => $r) {
+					$result[$k] += $datum * $ch_val[$k];
 				}
 			}
-
 		}
 
 		return $result;
+	}
+
+	private function single_pengujian($data_fuzzy, $table)
+	{
+		$result_table = [];
+
+		$max_from_all = ["Rendah" => 0, "Sedang" => 0, "Tinggi" => 0];
+		foreach ($table as $key => $row) {
+			$min_for_result = 1;
+			foreach ($row as $name => $item) {
+				if ($name === "result") {
+					$result_table[$key][$name] = [$item, $min_for_result];
+					if ($max_from_all[$item] < $min_for_result)
+						$max_from_all[$item] = $min_for_result;
+				} else {
+					if ($min_for_result > $data_fuzzy[$name][$item])
+						$min_for_result = $data_fuzzy[$name][$item];
+					$result_table[$key][$name] = [$item, $data_fuzzy[$name][$item]];
+				}
+			}
+		}
+
+		return array_values($max_from_all);
 	}
 
 	public function get_fuzzy()

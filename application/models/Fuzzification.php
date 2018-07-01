@@ -194,13 +194,6 @@ class Fuzzification
 			}
 		}
 
-		if (!count($this->rules)) {
-			echo $this->name;
-			echo "<br>";
-			print_r($this->data);
-			echo "<br>";
-			print_r($this->rules);
-		}
 		$this->chosenRule = $this->rules[$this->highestIGFrom]["name"];
 	}
 
@@ -228,7 +221,7 @@ class Fuzzification
 			$childRules = array_values($childRules);
 			// awalnya rules ada 10 jadi tinggal 9
 
-			$name = $this->chosenRule . " - " . $this->rules[$this->highestIGFrom]["types"][$i];
+			$name = $this->chosenRule . " - " . $i . " - " . $this->rules[$this->highestIGFrom]["types"][$i];
 
 			// persiapan itung fuzzifikasi anak pake data yg udah di filter sama rules yg udah dikurangi juga.
 			// untuk tipe ini aja, (masih didalam for) cth: skrg lagi looping buat type yg "normal"
@@ -353,6 +346,28 @@ class Fuzzification
 			return 1;
 
 		return $total;
+	}
+
+	function tableOfRules($prevRules = [])
+	{
+		$tableRules = [];
+
+		if (!$this->isRoot){
+			$arr = explode(" - ", $this->name);
+			$prevRules[$arr[0]] = $arr[1];
+		}
+		if ($this->children != null) {
+			foreach ($this->children as $child) {
+				foreach ($child->tableOfRules($prevRules) as $childRules) {
+					$tableRules[] = $childRules;
+				}
+			}
+		} else {
+			$prevRules["result"] = $this->result;
+			$tableRules[] = $prevRules;
+		}
+
+		return $tableRules;
 	}
 
 	function arrayFuzzy()
