@@ -235,7 +235,7 @@ class Fuzzification
 			// nah, ini ngitung persen nya berapa, threshold hardcoded 70%
 			// sesuai cth td, ini masih yg "normal" aja ya
 
-			$thresholdK = 90;
+			$thresholdK = 100;
 			$thresholdN = 5;
 			$sum = 0;
 			for ($j = 0; $j < count($this->risk); $j++) {
@@ -249,27 +249,27 @@ class Fuzzification
 			}
 
 			$max = 0;
-			for ($j = 0; $j < count($this->risk); $j++) {
-				// ini dijadiin %
-				$this->pernodePercentage[$j][$i] = $this->pernode[$j][$i] / $sum * 100;
-				if ($this->pernodePercentage[$j][$i] >= $this->pernodePercentage[$max][$i])
-					$max = $j;
-			}
+			if ($sum != 0)
+				for ($j = 0; $j < count($this->risk); $j++) {
+					// ini dijadiin %
+					$this->pernodePercentage[$j][$i] = $this->pernode[$j][$i] / $sum * 100;
+					if ($this->pernodePercentage[$j][$i] >= $this->pernodePercentage[$max][$i])
+						$max = $j;
+				}
 
 			// nah kalau ternyata ngga sampe 70% (result belum di set),
 			// kita jalanin fuzzifikasi, dan tree-nya bakal jadi makin dalam.
-			if (!$this->children[$i]->result) {
 //				kalau > 70% langsung di set result nya,
 //				cth di "normal", ketemu hasil "tinggi" > 78%, yaudah.
-				if ($this->pernodePercentage[$max][$i] >= $thresholdK) {
-					$this->children[$i]->setResult($this->risk[$max]);
+			if ($this->pernodePercentage[$max][$i] >= $thresholdK) {
+				$this->children[$i]->setResult($this->risk[$max]);
 
 //				cek thresholdN, walaupun % kurang dari 70%, kalau datanya udah menipis tetep dipilih yang paling maks,
 //				cth di "normal", ketemu hasil "tinggi" > 54%, tp data kurang dari 5%, yaudah terpaksa dipilih normal.
-				} else if (count($childData) / self::$initTotalData * 100 < $thresholdN || count($childRules) <= 1) {
-					$this->children[$i]->setResult($this->risk[$max]);
-				} else
-					$this->children[$i]->start();
+			} else if (count($childData) / self::$initTotalData * 100 < $thresholdN || count($childData) <= 3) {
+				$this->children[$i]->setResult($this->risk[$max]);
+			} else {
+				$this->children[$i]->start();
 			}
 		}
 	}
@@ -352,7 +352,7 @@ class Fuzzification
 	{
 		$tableRules = [];
 
-		if (!$this->isRoot){
+		if (!$this->isRoot) {
 			$arr = explode(" - ", $this->name);
 			$prevRules[$arr[0]] = $arr[1];
 		}
